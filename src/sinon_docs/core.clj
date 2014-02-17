@@ -11,5 +11,11 @@
       (throw (Exception. (str "File " file " should contain only a single map, but had " (count forms) " forms."))))
     (first forms)))
 
+(defn releases []
+  (load-edn-file "resources/releases.edn"))
+
 (defn current-release []
-  (-> "resources/releases.edn" load-edn-file :sinon))
+  (:sinon (releases)))
+
+(defn historic-releases []
+  (:historic (releases)))
