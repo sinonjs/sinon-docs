@@ -27,7 +27,7 @@
           new function. You can call the resulting function as many times as you
           want, but the original function will only be called once:
         </p>
-        <pre class="sh_javascript"><code>function once(fn) {
+        <pre class="code-snippet" data-lang="javascript"><code>function once(fn) {
     var returnValue, called = false;
     return function () {
         if (!called) {
@@ -42,7 +42,7 @@
           Testing this function can be quite elegantly achieved with a
           <a href="/docs#spies">test spy</a>:
         </p>
-        <pre class="sh_javascript"><code>it("calls the original function", function () {
+        <pre class="code-snippet" data-lang="javascript"><code>it("calls the original function", function () {
     var callback = sinon.spy();
     var proxy = once(callback);
 
@@ -53,7 +53,7 @@
         <p>
           The fact that the function was only called once is important:
         </p>
-        <pre class="sh_javascript"><code>it("calls the original function only once", function () {
+        <pre class="code-snippet" data-lang="javascript"><code>it("calls the original function only once", function () {
     var callback = sinon.spy();
     var proxy = once(callback);
 
@@ -67,7 +67,7 @@
         <p>
           We also care about the <code>this</code> object and arguments:
         </p>
-        <pre class="sh_javascript"><code>it("calls original function with right this and args", function () {
+        <pre class="code-snippet" data-lang="javascript"><code>it("calls original function with right this and args", function () {
     var callback = sinon.spy();
     var proxy = once(callback);
     var obj = {};
@@ -84,7 +84,7 @@
           original function returns. To test this, we create
           a <a href="/docs#stubs">stub</a>:
         </p>
-        <pre class="sh_javascript"><code>it("returns the return value from the original function", function () {
+        <pre class="code-snippet" data-lang="javascript"><code>it("returns the return value from the original function", function () {
     var callback = sinon.stub().returns(42);
     var proxy = once(callback);
 
@@ -99,7 +99,7 @@
         <p>
           The following function triggers network activity:
         </p>
-        <pre class="sh_javascript"><code>function getTodos(listId, callback) {
+        <pre class="code-snippet" data-lang="javascript"><code>function getTodos(listId, callback) {
     jQuery.ajax({
         url: "/todo/" + listId + "/items",
         success: function (data) {
@@ -112,7 +112,7 @@
           To test this function without triggering network activity we could
           stub <code>jQuery.ajax</code>:
         </p>
-        <pre class="sh_javascript"><code>after(function () {
+        <pre class="code-snippet" data-lang="javascript"><code>after(function () {
     // When the test either fails or passes, restore the original
     // jQuery ajax function (Sinon.JS also provides tools to help
     // test frameworks automate clean-up like this)
@@ -132,7 +132,7 @@ it("makes a GET request for todo items", function () {
           better to use Sinon.JS' <a href="/docs/#server">fake
           XMLHttpRequest</a>:
         </p>
-        <pre class="sh_javascript"><code>var xhr, requests;
+        <pre class="code-snippet" data-lang="javascript"><code>var xhr, requests;
 
 before(function () {
     xhr = sinon.useFakeXMLHttpRequest();
@@ -157,7 +157,7 @@ it("makes a GET request for todo items", function () {
           The preceding example shows how flexible this API is. If it looks too
           laborous, you may like the fake server:
         </p>
-        <pre class="sh_javascript"><code>var server;
+        <pre class="code-snippet" data-lang="javascript"><code>var server;
 
 before(function () { server = sinon.fakeServer.create(); });
 after(function () { server.restore(); });
@@ -193,7 +193,7 @@ it("calls callback with deserialized data", function () {
           when it has not been called for 100 milliseconds will it call the
           original function with the last set of arguments it received.
         </p>
-        <pre class="sh_javascript"><code>function throttle(callback) {
+        <pre class="code-snippet" data-lang="javascript"><code>function throttle(callback) {
     var timer;
     return function () {
         clearTimeout(timer);
@@ -206,7 +206,7 @@ it("calls callback with deserialized data", function () {
         <p>
           Thanks to Sinon.JS' time-bending abilities, testing it is easy:
         </p>
-        <pre class="sh_javascript"><code>var clock;
+        <pre class="code-snippet" data-lang="javascript"><code>var clock;
 
 before(function () { clock = sinon.useFakeTimers(); });
 after(function () { clock.restore(); });
@@ -255,7 +255,7 @@ it("calls callback after 100ms", function () {
           <li><a href="#matcher_example">Matchers</a></li>
         </ul>
         <div id="spy_example">
-          <pre class="sh_javascript"><code>// Function under test
+          <pre class="code-snippet" data-lang="javascript"><code>// Function under test
 function once(fn) {
     var returnValue, called = false;
     return function () {
@@ -278,7 +278,7 @@ it("calls the original function", function () {
           <p><a href="docs/#spies">Spy documentation</a>.</p>
         </div>
         <div id="stub_example">
-          <pre class="sh_javascript"><code>// Function under test
+          <pre class="code-snippet" data-lang="javascript"><code>// Function under test
 function once(fn) {
     var returnValue, called = false;
     return function () {
@@ -299,7 +299,7 @@ it("returns the return value from the original function", function () {
           <p><a href="docs/#stubs">Stub documentation</a>.</p>
         </div>
         <div id="mock_example">
-          <pre class="sh_javascript"><code>// Function under test
+          <pre class="code-snippet" data-lang="javascript"><code>// Function under test
 function once(fn) {
     var returnValue, called = false;
     return function () {
@@ -324,7 +324,7 @@ it("returns the return value from the original function", function () {
           <p><a href="docs/#mocks">Mock documentation</a>.</p>
         </div>
         <div id="timers_example">
-          <pre class="sh_javascript"><code>// Function under test
+          <pre class="code-snippet" data-lang="javascript"><code>// Function under test
 function throttle(callback) {
     var timer;
     return function () {
@@ -359,7 +359,7 @@ it("calls callback after 100ms": function () {
           <p><a href="docs/#clock">Timers documentation</a></p>
         </div>
         <div id="xhr_example">
-          <pre class="sh_javascript"><code>// Function under test
+          <pre class="code-snippet" data-lang="javascript"><code>// Function under test
 function getTodos(listId, callback) {
     jQuery.ajax({
         url: "/todo/" + listId + "/items",
@@ -392,7 +392,7 @@ it("makes a GET request for todo items", function () {
           <p><a href="docs/#server">Fake XHR/server documentation</a></p>
         </div>
         <div id="server_example">
-          <pre class="sh_javascript"><code>// Function under test
+          <pre class="code-snippet" data-lang="javascript"><code>// Function under test
 function getTodos(listId, callback) {
     jQuery.ajax({
         url: "/todo/" + listId + "/items",
@@ -424,7 +424,7 @@ it("calls callback with deserialized data", function () {
           <p><a href="docs/#server">Fake XHR/server documentation</a></p>
         </div>
         <div id="sandbox_example">
-          <pre class="sh_javascript"><code>// Function under test
+          <pre class="code-snippet" data-lang="javascript"><code>// Function under test
 function once(fn) {
     var returnValue, called = false;
     return function () {
@@ -452,7 +452,7 @@ it("returns the return value from the original function", sinon.test(function ()
           </p>
         </div>
         <div id="assertion_example">
-          <pre class="sh_javascript"><code>it("makes a GET request for todo items", function () {
+          <pre class="code-snippet" data-lang="javascript"><code>it("makes a GET request for todo items", function () {
     sinon.stub(jQuery, "ajax");
     getTodos(42, sinon.spy());
 
@@ -462,7 +462,7 @@ it("returns the return value from the original function", sinon.test(function ()
           <p><a href="docs/#assertions">Assertions documentation</a></p>
         </div>
         <div id="matcher_example">
-          <pre class="sh_javascript"><code>it("tests partial argument matches, regexen and more", function () {
+          <pre class="code-snippet" data-lang="javascript"><code>it("tests partial argument matches, regexen and more", function () {
     var spy = sinon.spy();
     spy("Go", function () { /* ... */ });
 

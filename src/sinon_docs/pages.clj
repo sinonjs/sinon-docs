@@ -2,7 +2,9 @@
   (:require [hiccup.page :refer [html5]]
             [optimus.link :as link]
             [sinon-docs.core :as sinon]
-            [clojure.string :as str]))
+            [clojure.string :as str]
+            [net.cgrand.enlive-html :refer [sniptest]]
+            [sinon-docs.highlight :refer [highlight]]))
 
 (defn- current-year []
   (+ 1900 (.getYear (java.util.Date.))))
@@ -36,22 +38,27 @@
        [:script {:src "/releases/sinon.js"}]
        [:script {:src "/releases/sinon-ie.js"}]])))
 
-(defn frontpage [context]
-  (let [current-release (sinon/current-release)
-        version (:version current-release)
+(defn- insert-download-button [html current-release]
+  (let [version (:version current-release)
         date (:date current-release)]
-    (page
-     context
-     "Documentation"
-     {:body-class "front"}
-     (str/replace (slurp "resources/partials/index.html")
-                  "<div class=\"download-link-placeholder\"/>"
-                  (str "<div class=\"content\">
+    (str/replace html "<div class=\"download-link-placeholder\"/>" (str "<div class=\"content\">
         <div class=\"button\"><a href=\"releases/sinon-" version ".js\">Download Sinon.JS " version "</a></div>
         <p>
           " date " - <a href=\"Changelog.txt\">Changelog</a> - <a href=\"/download/\">More builds/versions</a>
         </p>
-      </div>")))))
+      </div>"))))
+
+(defn- highlight-code-blocks [html]
+  (sniptest html [:pre.code-snippet] (fn [node] (highlight node {:class "codehilite"}))))
+
+(defn frontpage [context]
+  (page
+   context
+   "Documentation"
+   {:body-class "front"}
+   (-> (slurp "resources/partials/index.html")
+       (insert-download-button (sinon/current-release))
+       (highlight-code-blocks))))
 
 (defn get-pages []
   (merge {"/index.html" frontpage}))
