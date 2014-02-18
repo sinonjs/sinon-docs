@@ -9,7 +9,8 @@
                  [optimus "0.14.2"]
                  [hiccup "1.0.5"]
                  [enlive "1.1.5"]
-                 [clygments "0.1.1"]]
+                 [clygments "0.1.1"]
+                 [me.raynes/cegdown "0.1.1"]]
   :ring {:handler sinon-docs.web/app}
   :aliases {"build-site" ["run" "-m" "sinon-docs.web/export"]}
   :profiles {:dev {:plugins [[lein-ring "0.8.10"]]

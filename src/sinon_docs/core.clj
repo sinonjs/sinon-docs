@@ -1,7 +1,14 @@
 (ns sinon-docs.core
-  (:require [clojure.string :as str]))
+  (:require [clojure.string :as str]
+            [me.raynes.cegdown :as md]))
 
-(defn- load-edn-file [file]
+(def pegdown-options ;; https://github.com/sirthias/pegdown
+  [:autolinks :fenced-code-blocks :strikethrough :quotes :smarts])
+
+(defn to-html [s]
+  (md/to-html s pegdown-options))
+
+(defn load-edn-file [file]
   (let [content (slurp file)
         forms (try
                 (read-string (str "[" (str/trim content) "]"))

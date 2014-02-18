@@ -1,0 +1,182 @@
+{:title "Test spies"
+ :introduction-file "spies-intro.md"
+ :apis
+ [{:id :spies-api
+   :title "Spy API"
+   :introduction "Spy objects are objects returned from `sinon.spy()`. When spying on existing
+methods with `sinon.spy(object, method)`, the following properties and methods
+are also available on `object.method`."
+   :properties
+   [{:name "`spy.withArgs(arg1[, arg2, ...]);`"
+     :description "Creates a spy that only records calls when
+    the received arguments match those passed to `withArgs`. This is useful to
+    be more expressive in your assertions, where you can access the spy with the
+    same call:
+    <pre class=\"code-snippet\" data-lang=\"javascript\"><code>\"should call method once with each argument\": function () {
+    var object = { method: function () {} };
+    var spy = sinon.spy(object, \"method\");
+    spy.withArgs(42);
+    spy.withArgs(1);
+
+    object.method(42);
+    object.method(1);
+
+    assert(spy.withArgs(42).calledOnce);
+    assert(spy.withArgs(1).calledOnce);
+}</code></pre>"}
+    {:name "`spy.callCount`"
+     :description "The number of recorded calls."}
+    {:name "`spy.called`"
+     :description "`true` if the spy was called at least once"}
+    {:name "`spy.calledOnce`"
+     :description "`true` if spy was called exactly once"}
+    {:name "`spy.calledTwice`"
+     :description "`true` if the spy was called exactly twice"}
+    {:name "`spy.calledThrice`"
+     :description "`true` if the spy was called exactly thrice"}
+    {:name "`spy.firstCall`"
+     :description "The first call"}
+    {:name "`spy.secondCall`"
+     :description "The second call"}
+    {:name "`spy.thirdCall`"
+     :description "The third call"}
+    {:name "`spy.lastCall`"
+     :description "The last call"}
+    {:name "`spy.calledBefore(anotherSpy);`"
+     :description "Returns `true` if the spy was called before `anotherSpy`"}
+    {:name "`spy.calledAfter(anotherSpy);`"
+     :description "Returns `true` if the spy was called after `anotherSpy`"}
+    {:name "`spy.calledOn(obj);`"
+     :description "Returns `true` if the spy was called at least once with `obj` as `this`."}
+    {:name "`spy.alwaysCalledOn(obj);`"
+     :description "Returns `true` if the spy was always called with `obj` as `this`."}
+    {:name "`spy.calledWith(arg1, arg2, ...);`"
+     :description "Returns `true` if spy was called at least once with the provided
+    arguments. Can be used for partial matching, Sinon only checks the provided
+    arguments against actual arguments, so a call that received the provided arguments
+    (in the same spots) and possibly others as well will return `true`."}
+    {:name "`spy.alwaysCalledWith(arg1, arg2, ...);`"
+     :description "Returns `true` if spy was always called with the provided arguments (and possibly others)."}
+    {:name "`spy.calledWithExactly(arg1, arg2, ...);`"
+     :description "Returns `true` if spy was called at least once with the provided arguments and no others."}
+    {:name "`spy.alwaysCalledWithExactly(arg1, arg2, ...);`"
+     :description "Returns `true` if spy was always called with the exact provided arguments."}
+    {:name "`spy.calledWithMatch(arg1, arg2, ...);`"
+     :description "Returns `true` if spy was called with matching arguments
+    (and possibly others). This behaves the same as
+    `spy.calledWith(sinon.match(arg1), sinon.match(arg2), ...)`."}
+    {:name "`spy.alwaysCalledWithMatch(arg1, arg2, ...);`"
+     :description "Returns `true` if spy was always called with matching arguments
+    (and possibly others). This behaves the same as
+    `spy.alwaysCalledWith(sinon.match(arg1), sinon.match(arg2), ...)`."}
+    {:name "`spy.calledWithNew();`"
+     :description "Returns `true` if spy/stub was called the `new`
+    operator. Beware that this is inferred based on the value of
+    the `this` object and the spy
+    function's `prototype`, so it may give false positives if
+    you actively return the right kind of object."}
+    {:name "`spy.neverCalledWith(arg1, arg2, ...);`"
+     :description "Returns `true` if the spy/stub was never called with the provided arguments."}
+    {:name "`spy.neverCalledWithMatch(arg1, arg2, ...);`"
+     :description "Returns `true` if the spy/stub was never called with
+    matching arguments. This behaves the same as
+    `spy.neverCalledWith(sinon.match(arg1), sinon.match(arg2), ...)`."}
+    {:name "`spy.threw();`"
+     :description "Returns `true` if spy threw an exception at least once."}
+    {:name "`spy.threw(\"TypeError\");`"
+     :description "Returns `true` if spy threw an exception of the provided type at least once."}
+    {:name "`spy.threw(obj);`"
+     :description "Returns `true` if spy threw the provided exception object at least once."}
+    {:name "`spy.alwaysThrew();`"
+     :description "Returns `true` if spy always threw an exception."}
+    {:name "`spy.alwaysThrew(\"TypeError\");`"
+     :description "Returns `true` if spy always threw an exception of the provided type."}
+    {:name "`spy.alwaysThrew(obj);`"
+     :description "Returns `true` if spy always threw the provided exception object."}
+    {:name "`spy.returned(obj);`"
+     :description "Returns `true` if spy returned the provided value at least once.
+    Uses deep comparison for objects and arrays.
+    Use `spy.returned(sinon.match.same(obj))` for strict
+    comparison (see [matchers](#matchers))."}
+    {:name "`spy.alwaysReturned(obj);`"
+     :description "Returns `true` if spy always returned the provided value."}
+    {:name "`var spyCall = spy.getCall(n);`"
+     :description "<p>
+      Returns the <em>nth</em> [call](#spycall). Accessing individual calls
+      helps with more detailed behavior verification when the spy is called more
+      than once. Example:
+    </p>
+    <pre class=\"code-snippet\" data-lang=\"javascript\"><code>sinon.spy(jQuery, \"ajax\");
+jQuery.ajax(\"/stuffs\");
+var spyCall = jQuery.ajax.getCall(0);
+
+assertEquals(\"/stuffs\", spyCall.args[0]);</code></pre>"}
+    {:name "`spy.thisValues`"
+     :description "Array of `this` objects, `spy.thisValues[0]` is the `this`
+    object for the first call."}
+    {:name "`spy.args`"
+     :description "Array of arguments received, `spy.args[0]` is an array of
+    arguments recevied in the first call."}
+    {:name "`spy.exceptions`"
+     :description "Array of exception objects thrown, `spy.exceptions[0]` is
+    the exception thrown by the first call. If the call did not throw an
+    error, the value at the call's location in `.exceptions`
+    will be 'undefined'."}
+    {:name "`spy.returnValues`"
+     :description "Array of return values, `spy.returnValues[0]` is the return
+    value of the first call. If the call did not explicitly return a
+    value, the value at the call's location in `.returnValues`
+    will be 'undefined'."}
+    {:name "`spy.reset()`"
+     :description "Resets the state of a spy."}
+    {:name "`spy.printf(\"format string\", [arg1, arg2, ...])`"
+     :description "Returns the passed format string with the following replacements performed:
+    <ul>
+      <li>`%n`: the name of the spy (\"spy\" by default)</li>
+      <li>`%c`: the number of times the spy was called, in words (\"once\", \"twice\", etc.)</li>
+      <li>`%C`: a list of string representations of the calls to the spy, with each call prefixed by a newline and four spaces</li>
+      <li>`%t`: a comma-delimited list of `this` values the spy was called on</li>
+      <li>`%<var>n</var>`: the formatted value of the <var>n</var>th argument passed to `printf`</li>
+      <li>`%*`: a comma-delimited list of the (non-format string) arguments passed to `printf`</li>
+    </ul>"}]}
+  {:id :spycall
+   :title "Individual spy calls"
+   :properties
+   [{:name "`var spyCall = spy.getCall(n)`"
+     :description "<p>
+      Returns the <em>nth</em> [call](#spycall). Accessing individual calls
+      helps with more detailed behavior verification when the spy is called more
+      than once. Example:
+    </p>
+    <pre class=\"code-snippet\" data-lang=\"javascript\"><code>sinon.spy(jQuery, \"ajax\");
+jQuery.ajax(\"/stuffs\");
+var spyCall = jQuery.ajax.getCall(0);
+
+assertEquals(\"/stuffs\", spyCall.args[0]);</code></pre>
+  "}
+    {:name "`spyCall.calledOn(obj);`"
+     :description "Returns `true` if `obj` was `this` for this call."}
+    {:name "`spyCall.calledWith(arg1, arg2, ...);`"
+     :description "Returns `true` if call received provided arguments (and possibly others)."}
+    {:name "`spyCall.calledWithExactly(arg1, arg2, ...);`"
+     :description "Returns `true` if call received provided arguments and no others."}
+    {:name "`spyCall.calledWithMatch(arg1, arg2, ...);`"
+     :description "Returns `true` if call received matching arguments (and possibly others). This behaves the same as `spyCall.calledWith(sinon.match(arg1), sinon.match(arg2), ...)`."}
+    {:name "`spyCall.notCalledWith(arg1, arg2, ...);`"
+     :description "Returns `true` if call did not receive provided arguments."}
+    {:name "`spyCall.notCalledWithMatch(arg1, arg2, ...);`"
+     :description "Returns `true` if call did not receive matching arguments. This behaves the same as `spyCall.notCalledWith(sinon.match(arg1), sinon.match(arg2), ...)`."}
+    {:name "`spyCall.threw();`"
+     :description "Returns `true` if call threw an exception."}
+    {:name "`spyCall.threw(\"TypeError\");`"
+     :description "Returns `true` if call threw exception of provided type."}
+    {:name "`spyCall.threw(obj);`"
+     :description "Returns `true` if call threw provided exception object."}
+    {:name "`spyCall.thisValue`"
+     :description "The call's `this` value."}
+    {:name "`spyCall.args`"
+     :description "Array of received arguments."}
+    {:name "`spyCall.exception`"
+     :description "Exception thrown, if any."}
+    {:name "`spyCall.returnValue`"
+     :description "Return value."}]}]}
