@@ -42,7 +42,7 @@
      (list [:h2 (list (:title section) " "
                       [:a.api {:href (str "#" (:id api-section) "-api")} "API reference"])]
            (sinon/to-html (or (:introduction section)
-                              (sinon/load-file (path (:introduction-file section)))))
+                              (sinon/slurp-resource (path (:introduction-file section)))))
            (map render-api (:apis section)))]))
 
 (defn- docs-content [apis]

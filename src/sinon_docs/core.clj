@@ -4,11 +4,11 @@
             [net.cgrand.enlive-html :refer [sniptest any-node replace-vars html]]
             [sinon-docs.highlight :refer [highlight]]))
 
-(defn load-file [file]
+(defn slurp-resource [file]
   (slurp (clojure.java.io/resource file)))
 
 (defn load-edn-file [file]
-  (let [content (load-file file)
+  (let [content (slurp-resource file)
         forms (try
                 (read-string (str "[" (str/trim content) "]"))
                 (catch Exception e
