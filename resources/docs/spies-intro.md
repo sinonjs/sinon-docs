@@ -54,20 +54,20 @@ contrived example:
 <a name="sinonspy"></a>
 
 <dl>
-  <dt>`var spy = sinon.spy();`</dt>
+  <dt><code>var spy = sinon.spy();</code></dt>
   <dd>
-    Creates an anonymous function that records arguments, `this` value,
+    Creates an anonymous function that records arguments, <code>this</code> value,
     exceptions and return values for all calls.
   </dd>
-  <dt>`var spy = sinon.spy(myFunc);`</dt>
+  <dt><code>var spy = sinon.spy(myFunc);</code></dt>
   <dd>Spies on the provided function</dd>
-  <dt>`var spy = sinon.spy(object, "method");`</dt>
+  <dt><code>var spy = sinon.spy(object, "method");</code></dt>
   <dd>
-    Creates a [spy](#spyprops) for `object.method` and replaces the original
-    method with the spy. The spy acts exactly like the original method in all
-    cases. The original method can be restored by calling
-    `object.method.restore()`. The returned spy is the function object which
-    replaced the original method. `spy === object.method`.
+    Creates a <a href="#spyprops">spy</a> for <code>object.method</code> and
+    replaces the original method with the spy. The spy acts exactly like the
+    original method in all cases. The original method can be restored by calling
+    <code>object.method.restore()</code>. The returned spy is the function
+    object which replaced the original method. <code>spy === object.method</code>.
   </dd>
 </dl>
 

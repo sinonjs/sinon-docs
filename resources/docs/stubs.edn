@@ -1,0 +1,177 @@
+{:title "Test stubs"
+ :introduction-file "stubs-intro.md"
+ :apis
+ [{:id :spies-api
+   :title "Stub API"
+   :properties
+   [{:name "var stub = sinon.stub();"
+     :description "Creates an anonymous stub function."}
+    {:name "var stub = sinon.stub(object, \"method\");"
+     :description "Replaces `object.method` with a stub function. The original
+        function can be restored by calling `object.method.restore();`
+        (or `stub.restore();`). An exception is thrown if the property
+        is not already a function, to help avoid typos when stubbing methods."}
+    {:name "var stub = sinon.stub(object, \"method\", func);"
+     :description "Replaces `object.method` with a `func`, wrapped
+        in a `spy`. As usual, `object.method.restore();`
+        can be used to restore the original method."}
+    {:name "var stub = sinon.stub(obj);"
+     :description "Stubs all the object's methods.  Note that it's usually better
+        practice to stub individual methods, particularly on
+        objects that you don't understand or control all the methods for
+        (e.g. library dependencies).  Stubbing individual methods tests
+        intent more precisely and is less susceptible to unexpected
+        behavior as the object's code evolves.<br>
+        If you want to create a stub object of `MyConstructor`,
+        but don't want the constructor to be invoked, use this utility
+        function."
+     :example "var stub = sinon.createStubInstance(MyConstructor)"}
+    {:name "stub.withArgs(arg1[, arg2, ...]);"
+     :description "Stubs the method only for the provided arguments. This is useful to be
+        more expressive in your assertions, where you can access the spy with
+        the same call. It is also useful to create a stub that can act
+        differently in response to different arguments."
+     :example "\"test should stub method differently based on arguments\": function () {
+    var callback = sinon.stub();
+    callback.withArgs(42).returns(1);
+    callback.withArgs(1).throws(\"TypeError\");
+
+    callback(); // No return value, no exception
+    callback(42); // Returns 1
+    callback(1); // Throws TypeError
+}"}
+    {:name "stub.onCall(n);"
+     :id "stub-onCall"
+     :description [{:text "*Added in Sinon.JS 1.8*"}
+                   {:text "Defines the behavior of the stub on the *nth* call. Useful for testing sequential interactions."}
+                   {:example "\"test should stub method differently on consecutive calls\": function () {
+    var callback = sinon.stub();
+    callback.onCall(0).returns(1);
+    callback.onCall(1).returns(2);
+    callback.returns(3);
+
+    callback(); // Returns 1
+    callback(); // Returns 2
+    callback(); // All following calls return 3
+}"}
+                   {:text "There are methods `onFirstCall`, `onSecondCall`,`onThirdCall` to make stub definitions read more naturally.
+
+                          `onCall` can be combined with all of the behavior defining methods in this section.  In particular, it can be used together with `withArgs`."}
+                   {:example "\"test should stub method differently on consecutive calls with certain argument\": function () {
+    var callback = sinon.stub();
+    callback.withArgs(42)
+        .onFirstCall().returns(1)
+        .onSecondCall().returns(2);
+    callback.returns(0);
+
+    callback(1); // Returns 0
+    callback(42); // Returns 1
+    callback(1); // Returns 0
+    callback(42); // Returns 2
+    callback(1); // Returns 0
+    callback(42); // Returns 0
+}"}
+                   {:text "Note how the behavior of the stub for argument `42` falls back to the default behavior once no more calls have been defined."}]}
+    {:name "stub.onFirstCall();"
+     :description "Alias for `stub.onCall(0);`"}
+    {:name "stub.onSecondCall();"
+     :description "Alias for `stub.onCall(1);`"}
+    {:name "stub.onThirdCall();"
+     :description "Alias for `stub.onCall(2);`"}
+    {:name "stub.returns(obj);"
+     :description "Makes the stub return the provided value."}
+    {:name "stub.returnsArg(index);"
+     :description "Causes the stub to return the argument at the provided index.
+        `stub.returnsArg(0);` causes the stub to return the first argument."}
+    {:name "stub.throws();"
+     :description "Causes the stub to throw an exception (`Error`)."}
+    {:name "stub.throws(\"TypeError\");"
+     :description "Causes the stub to throw an exception of the provided type."}
+    {:name "stub.throws(obj);"
+     :description "Causes the stub to throw the provided exception object."}
+    {:name "stub.callsArg(index);"
+     :description "Causes the stub to call the argument at the provided index as a callback
+        function. `stub.callsArg(0);` causes the stub to call the
+        first argument as a callback."}
+    {:name "stub.callsArgOn(index, context);"
+     :description "Like above but with an additional parameter to pass the `this` context."}
+    {:name "stub.callsArgWith(index, arg1, arg2, ...);"
+     :description "Like `callsArg`, but with arguments to pass to the callback."}
+    {:name "stub.callsArgOnWith(index, context, arg1, arg2, ...);"
+     :description "Like above but with an additional parameter to pass the `this` context."}
+    {:name "stub.yields([arg1, arg2, ...])"
+     :description "Almost like `callsArg`. Causes the stub to call the first
+        callback it receives with the provided arguments (if any). If a method
+        accepts more than one callback, you need to use `callsArg`
+        to have the stub invoke other callbacks than the first one."}
+    {:name "stub.yieldsOn(context, [arg1, arg2, ...])"
+     :description "Like above but with an additional parameter to pass the `this` context."}
+    {:name "stub.yieldsTo(property, [arg1, arg2, ...])"
+     :description "Causes the spy to invoke a callback passed as a property of an object
+        to the spy. Like `yields`, `yieldsTo` grabs the
+        first matching argument, finds the callback and calls it with the
+        (optional) arguments."}
+    {:name "stub.yieldsToOn(property, context, [arg1, arg2, ...])"
+     :description "Like above but with an additional parameter to pass the `this` context."
+     :example "\"test should fake successful ajax request\": function () {
+    sinon.stub(jQuery, \"ajax\").yieldsTo(\"success\", [1, 2, 3]);
+
+    jQuery.ajax({
+        success: function (data) {
+            assertEquals([1, 2, 3], data);
+        }
+    });
+}"}
+    {:name "spy.yield([arg1, arg2, ...])"
+     :description "Invoke callbacks passed to the `spy` with the given
+        arguments. If the spy was never called with a function argument,
+        `yield` throws an error. Also aliased as
+        `invokeCallback`."}
+    {:name "spy.yieldTo(callback, [arg1, arg2, ...])"
+     :description "Invokes callbacks passed as a property of an object to the
+        spy. Like `yield`, `yieldTo` grabs the first
+        matching argument, finds the callback and calls it with the (optional)
+        arguments."
+     :example "\"calling callbacks\": function () {
+    var callback = sinon.stub();
+    callback({
+        \"success\": function () {
+            console.log(\"Success!\");
+        },
+        \"failure\": function () {
+            console.log(\"Oh noes!\");
+        }
+    });
+
+    callback.yieldTo(\"failure\"); // Logs \"Oh noes!\"
+}"}
+    {:name "spy.callArg(argNum)"
+     :description "Like `yield`, but with an explicit argument number
+        specifying which callback to call. Useful if a function is called with
+        more than one callback, and simply calling the first callback is not
+        desired."
+     :example "\"calling the last callback\": function () {
+    var callback = sinon.stub();
+    callback(function () {
+        console.log(\"Success!\");
+    }, function () {
+        console.log(\"Oh noes!\");
+    });
+
+    callback.callArg(1); // Logs \"Oh noes!\"
+}"}
+    {:name "spy.callArgWith(argNum, [arg1, arg2, ...])"
+     :description "
+        Like `callArg`, but with arguments.
+      "}
+    {:name "stub.callsArgAsync(index);"
+     :description "Same as their corresponding non-Async counterparts, but with callback being deferred (executed not immediately but after short timeout and in another \"thread\")"}
+    {:name "stub.callsArgAsync(index);" :description ""}
+    {:name "stub.callsArgOnAsync(index, context);" :description ""}
+    {:name "stub.callsArgWithAsync(index, arg1, arg2, ...);" :description ""}
+    {:name "stub.callsArgOnWithAsync(index, context, arg1, arg2, ...);" :description ""}
+    {:name "stub.yieldsAsync([arg1, arg2, ...])" :description ""}
+    {:name "stub.yieldsOnAsync(context, [arg1, arg2, ...])" :description ""}
+    {:name "stub.yieldsToAsync(property, [arg1, arg2, ...])" :description ""}
+    {:name "stub.yieldsToOnAsync(property, context, [arg1, arg2, ...])"
+     :description "Same as their corresponding non-Async counterparts, but with callback being deferred (executed not immediately but after short timeout and in another \"thread\")"}]}]}

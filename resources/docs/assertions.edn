@@ -1,0 +1,96 @@
+{:title "Assertions"
+ :introduction "Sinon.JS ships with a set of assertions that mirror most behavior verification
+methods and properties on spies and stubs. The advantage of using the assertions
+is that failed expectations on stubs and spies can be expressed directly as
+assertion failures with detailed and helpful error messages.
+
+To make sure assertions integrate nicely with your test framework, you should
+customize either <code>sinon.assert.fail</code> or
+<code>sinon.assert.failException</code> and look into <a
+href=\"#assert-expose\"><code>sinon.assert.expose</code></a> and
+<a href=\"#assert-pass\"><code>sinon.assert.pass</code></a>.
+
+The assertions can be used with either spies or stubs.
+
+<pre class=\"code-snippet mocks\" data-lang=\"javascript\"><code>\"test should call subscribers with message as first argument\" : function () {
+    var message = \"an example message\";
+    var spy = sinon.spy();
+
+    PubSub.subscribe(message, spy);
+    PubSub.publishSync(message, \"some payload\");
+
+    sinon.assert.calledOnce(spy);
+    sinon.assert.calledWith(spy, message);
+}</code></pre>"
+ :apis
+ [{:id :assertions-api
+   :title "Assertions API"
+   :properties
+   [{:name "sinon.assert.fail(message)"
+     :description "Every assertion fails by calling this method. By default it throws an error
+    of type `sinon.assert.failException`. If your testing framework looks for
+    assertion errors by checking for a specific exception, you can simply
+    override the kind of exception thrown. If that does not fit with your
+    testing framework of choice, override the `fail` method to do the right
+    thing."}
+    {:name "sinon.assert.failException"
+     :description "Defaults to `\"AssertError\"`."}
+    {:name "sinon.assert.pass(assertion)"
+     :id "assert-pass"
+     :description "Called every time an assertion passes. Default implementation does nothing."}
+    {:name "sinon.assert.notCalled(spy)"
+     :description "Passes if spy was never called."}
+    {:name "sinon.assert.called(spy)"
+     :description "Passes if spy was called at least once."}
+    {:name "sinon.assert.calledOnce(spy)"
+     :description "Passes if spy was called once and only once."}
+    {:name "sinon.assert.calledTwice()"
+     :description "Passes if spy was called exactly twice."}
+    {:name "sinon.assert.calledThrice()"
+     :description "Passes if spy was called exactly three times."}
+    {:name "sinon.assert.callCount(spy, num)"
+     :description "Passes if the spy was called exactly `num` times."}
+    {:name "sinon.assert.callOrder(spy1, spy2, ...)"
+     :description "Passes if the provided spies where called in the specified order."}
+    {:name "sinon.assert.calledOn(spy, obj)"
+     :description "Passes if the spy was ever called with `obj` as its `this` value."}
+    {:name "sinon.assert.alwaysCalledOn(spy, obj)"
+     :description "Passes if the spy was always called with `obj` as its `this` value."}
+    {:name "sinon.assert.calledWith(spy, arg1, arg2, ...)"
+     :description "Passes if the spy was called with the provided arguments."}
+    {:name "sinon.assert.alwaysCalledWith(spy, arg1, arg2, ...)"
+     :description "Passes if the spy was always called with the provided arguments."}
+    {:name "sinon.assert.neverCalledWith(spy, arg1, arg2, ...)"
+     :description "Passes if the spy was never called with the provided arguments."}
+    {:name "sinon.assert.calledWithExactly(spy, arg1, arg2, ...)"
+     :description "Passes if the spy was called with the provided arguments and no others."}
+    {:name "sinon.assert.alwaysCalledWithExactly(spy, arg1, arg2, ...)"
+     :description "Passes if the spy was always called with the provided arguments and no others."}
+    {:name "sinon.assert.calledWithMatch(spy, arg1, arg2, ...)"
+     :description "Passes if the spy was called with matching arguments. This behaves
+    the same as `sinon.assert.calledWith(spy, sinon.match(arg1), sinon.match(arg2), ...)`."}
+    {:name "sinon.assert.alwaysCalledWithMatch(spy, arg1, arg2, ...)"
+     :description "Passes if the spy was always called with matching arguments. This behaves
+    the same as `sinon.assert.alwaysCalledWith(spy, sinon.match(arg1), sinon.match(arg2), ...)`."}
+    {:name "sinon.assert.neverCalledWithMatch(spy, arg1, arg2, ...)"
+     :description "Passes if the spy was never called with matching arguments. This behaves
+    the same as `sinon.assert.neverCalledWith(spy, sinon.match(arg1), sinon.match(arg2), ...)`."}
+    {:name "sinon.assert.threw(spy, exception)"
+     :description "Passes if the spy threw the given exception. The exception can be a string
+    denoting its type, or an actual object. If only one argument is provided,
+    the assertion passes if the spy ever threw any exception."}
+    {:name "sinon.assert.alwaysThrew(spy, exception)"
+     :description "Like above, only required for all calls to the spy."}
+    {:id "assert-expose"
+     :name "sinon.assert.expose(object, options)"
+     :description [{:text "Exposes assertions into another object, to better integrate with the test
+      framework. For instance, JsTestDriver uses global assertions, and to make
+      Sinon.JS assertions appear alongside them, you can do."}
+                   {:example "sinon.assert.expose(this);"}
+                   {:text "This will give you `assertCalled(spy)`,`assertCallOrder(spy1, spy2, ...)` and so on."}
+                   {:text "The method accepts an optional options object with two options.
+      **prefix** is a prefix to give assertions. By default it is
+      \"assert\", so `sinon.assert.called` becomes `target.assertCalled`. By
+      passing a blank string, the exposed method will be `target.called`. The
+      second option, **includeFail** is true by default, and copies
+      over the `fail` and `failException` properties."}]}]}]}
