@@ -7,5 +7,5 @@
  {:id "assertions" :menu-text "Assertions"}
  ;; {:id "matchers" :menu-text "Matchers"}
  ;; {:id "sandbox" :menu-text "Sandboxing"}
- ;; {:id "utils" :menu-text "Utils"}
+ {:id "utils" :menu-text "Utils"}
 ]
