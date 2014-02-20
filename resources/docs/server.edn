@@ -1,0 +1,231 @@
+{:title "Fake <code>XMLHttpRequest</code>"
+ :introduction "<ul class=\"nav\">
+  <li><a href=\"#useFakeXMLHttpRequest\">sinon.useFakeXMLHttpRequest</a></li>
+  <li><a href=\"#FakeXMLHttpRequest\">FakeXMLHttpRequest</a></li>
+  <li><a href=\"#responses\">Simulating responses</a></li>
+  <li><a href=\"#fakeServer\">Fake server</a></li>
+</ul>
+
+Provides a fake implementation of `XMLHttpRequest` and provides
+several interfaces for manipulating objects created by it. Also fakes the native
+`XMLHttpRequest` and `ActiveXObject` (if available, and
+only for `XMLHTTP` progids). Helps with testing requests made with
+XHR.
+
+When faking XHR with IE you also need
+[sinon-ie-${current-version}](/releases/sinon-ie-${current-version}.js), which
+should be loaded after sinon-${current-version}.js.
+
+The fake server and XHR can be used completely stand-alone by downloading
+[sinon-server-${current-version}](/releases/sinon-server-${current-version}.js).
+When using the fake server in IE you also need
+[sinon-ie-${current-version}](/releases/sinon-ie-${current-version}.js). Load it
+after the first file.
+
+<pre class=\"code-snippet timers\" data-lang=\"javascript\"><code>{
+    setUp: function () {
+        this.xhr = sinon.useFakeXMLHttpRequest();
+        var requests = this.requests = [];
+
+        this.xhr.onCreate = function (xhr) {
+            requests.push(xhr);
+        };
+    },
+
+    tearDown: function () {
+        this.xhr.restore();
+    },
+
+    \"test should fetch comments from server\" : function () {
+        var callback = sinon.spy();
+        myLib.getCommentsFor(\"/some/article\", callback);
+        assertEquals(1, this.requests.length);
+
+        this.requests[0].respond(200, { \"Content-Type\": \"application/json\" },
+                                 '[{ \"id\": 12, \"comment\": \"Hey there\" }]');
+        assert(callback.calledWith([{ id: 12, comment: \"Hey there\" }]));
+    }
+}</code></pre>"
+ :apis
+ [{:id :useFakeXMLHttpRequest
+   :title "<code>sinon.useFakeXMLHttpRequest</code>"
+   :properties
+   [{:name "var xhr = sinon.useFakeXMLHttpRequest();"
+     :description "Causes Sinon to replace the native `XMLHttpRequest` object in browsers that
+    support it with a custom implementation which does not send actual requests.
+    In browsers that support `ActiveXObject`, this constructor is replaced, and
+    fake objects are returned for `XMLHTTP` progIds. Other progIds, such as
+    `XMLDOM` are left untouched."}
+    {:name "xhr.onCreate = function (xhr) {};"
+     :description "By assigning a function to the `onCreate` property of the
+    returned object from `useFakeXMLHttpRequest()` you can subscribe to newly
+    created `FakeXMLHttpRequest` objects. See below for the fake xhr object API.
+    Using this observer means you can still reach objects created by e.g.
+    `jQuery.ajax` (or other abstractions/frameworks)."} {:name "xhr.restore();"
+     :description "Restore original function(s)."}]}
+  {:id :FakeXMLHttpRequest
+   :title "<code>FakeXMLHttpRequest</code>"
+   :properties
+   [{:name "String request.url"
+     :description "The URL set on the request object."}
+    {:name "String request.method"
+     :description "The request method as a string."}
+    {:name "Object request.requestHeaders"
+     :description "<p>
+      An object of all request headers, i.e.:
+    </p>
+    <pre class=\"code-snippet\" data-lang=\"javascript\"><code>{
+    \"Accept\": \"text/html, */*\",
+    \"Connection\": \"keep-alive\"
+}</code></pre>"}
+    {:name "String request.requestBody"
+     :description "The request body"}
+    {:name "int request.status"
+     :description "The request's status code. Undefined if the request has not been handled
+    (see [`respond`](#respond) below)."}
+    {:name "String request.statusText"
+     :description "Only populated if the [`respond`](#respond) method is called (see below)."}
+    {:name "boolean request.async"
+     :description "Whether or not the request is asynchronous."}
+    {:name "String request.username"
+     :description "Username, if any."}
+    {:name "String request.password"
+     :description "Password, if any."}
+    {:name "Document request.responseXML"
+     :description "When using [`respond`](#respond), this property is populated
+    with a parsed document if response headers indicate as much (see [the
+    spec](http://www.w3.org/TR/XMLHttpRequest/))."} {:name "String
+    request.getResponseHeader(header);"
+     :description "The value of the given response header, if the request has been responded to (see [`respond`](#respond))."}
+    {:name "Object request.getAllResponseHeaders();"
+     :description "All response headers as an object."}]}
+  {:id :filtered-requests
+   :title "Filtered requests"
+   :introduction "When using Sinon.JS for mockups or partial
+integration/functional testing, you might want to fake some requests, while
+allowing others to go throught to the backend server. With filtered
+`FakeXMLHttpRequest`s (new in Sinon 1.3.0), you can."
+   :properties
+   [{:name "FakeXMLHttpRequest.useFilters"
+     :description "Default `false`. When set to `true`, Sinon will check added filters if certain requests should be \"unfaked\"."}
+    {:name "FakeXMLHttpRequest.addFilter(fn)"
+     :description "Add a filter that will decide whether or not to fake a request. The filter
+    will be called when `xhr.open` is called, with the exact same arguments
+    (`method`, `url`, `async`, `username`, `password`). If the filter returns
+    truthy, the request will not be faked."}]}
+  {:id :responses
+   :title "Simulating server responses"
+   :properties
+   [{:name "request.setResponseHeaders(object);"
+     :description "
+    Sets response headers (e.g. `{ \"Content-Type\": \"text/html\", /* ... */ }`,
+      updates the `readyState` property and fires `onreadystatechange`."}
+    {:name "request.setResponseBody(body);"
+     :description "Sets the respond body, updates the `readyState` property and fires
+    `onreadystatechange`. Additionally, populates `responseXML` with a parsed
+    document if [response headers indicate as much](http://www.w3.org/TR/XMLHttpRequest/)."}
+    {:name "var server = sinon.fakeServer.create();"
+     :description "Creates a new server. This function also calls `sinon.useFakeXMLHttpRequest()`."}
+    {:name "request.respond(status, headers, body);"
+     :id :respond
+     :description "Calls the above two methods and sets the `status` and
+`statusText` properties. Status should be a number, the status text is looked up
+from `sinon.FakeXMLHttpRequest.statusCodes`."}
+    {:name "Boolean request.autoRespond"
+     :id :auto-respond
+     :description "When set to `true`, causes the server to automatically
+    respond to incoming requests after a timeout. The default timeout is 10ms
+    but you can control it through the `autoRespondAfter` property. Note that
+    this feature is intended to help during mockup development, and is not
+    suitable for use in tests."}
+    {:name "Number request.autoRespondAfter"
+     :id :auto-respond-after
+     :description "When `autoRespond` is `true`, respond to requests after this number of milliseconds. Default is 10."}]}
+  {:id :fakeServer
+   :title "Fake server"
+   :introduction "High-level API to manipulate `FakeXMLHttpRequest` instances.
+
+<small>For help with handling JSON-P please refer to our [notes below](#json-p)</small>
+
+<pre id=\"server_example\" class=\"sh_javascript timers\"><code>{
+    setUp: function () {
+        this.server = sinon.fakeServer.create();
+    },
+
+    tearDown: function () {
+        this.server.restore();
+    },
+
+    \"test should fetch comments from server\" : function () {
+        this.server.respondWith(\"GET\", \"/some/article/comments.json\",
+            [200, { \"Content-Type\": \"application/json\" },
+             '[{ \"id\": 12, \"comment\": \"Hey there\" }]']);
+
+        var callback = sinon.spy();
+        myLib.getCommentsFor(\"/some/article\", callback);
+        this.server.respond();
+
+        sinon.assert.calledWith(callback, [{ id: 12, comment: \"Hey there\" }]));
+    }
+}</code></pre>"
+   :properties
+   [{:name "var server = sinon.fakeServer.create();"
+     :description "Creates a new server. This function also calls `sinon.useFakeXMLHttpRequest()`."}
+    {:name "var server = sinon.fakeServerWithClock.create();"
+     :description "Creates a server that also manages fake timers. This is
+    useful when testing XHR objects created with e.g. jQuery 1.3.x, which uses a
+    timer to poll the object for completion, rather than the usual
+    `onreadystatechange`."}
+    {:name "server.respondWith(response);"
+     :description "`response` can be on of three things:
+
+1. A string representing the response body
+2. An array with status, headers and response body, e.g. `[200, { \"Content-Type\": \"text/html\", \"Content-Length\": 2 }, \"OK\"]`
+3. A function.
+
+Default status is 200 and default headers are none. Causes the server to
+respond to any request not matched by another response with the provided
+data. The default catch-all response is `[404, {}, \"\"]`.
+
+When the response is a function, it will be passed the request object. You
+must manually call [respond](#respond) on it to complete the
+request."}
+    {:name "server.respondWith(url, response);"
+     :description "Responds to all requests to given URL, e.g. `/posts/1`."}
+    {:name "server.respondWith(method, url, response);"
+     :description "Responds to all `method` requests to the given URL with the given response.
+    `method` is an HTTP verb."}
+    {:name "server.respondWith(urlRegExp, response);"
+     :description "URL may be a regular expression, e.g. `/\\/post/\\d+`
+    If the response is a function, it will be passed any capture groups
+    from the regular expression along with the XMLHttpRequest object:
+    <pre class=\"code-snippet\" data-lang=\"javascript\"><code>server.respondWith(/\\/todo-items\\/(\\d+)/, function (xhr, id) {
+    xhr.respond(200, { \"Content-Type\": \"application/json\" }, '[{ \"id\": ' + id + ' }]');
+});</code></pre>"}
+    {:name "server.respondWith(method, urlRegExp, response);"
+     :description "Responds to all `method` requests to URLs matching the
+    regular expression."}
+    {:name "server.respond();"
+     :description "Causes all queued asynchronous requests to receive a response. If none of
+    the responses added through `respondWith` match, the default response is
+    `[404, {}, \"\"]`. Synchronous requests are responded to immediately, so make
+    sure to call `respondWith` upfront. If called with arguments, `respondWith`
+    will be called with those arguments before responding to requests."}
+    {:name "server.autoRespond = true;"
+     :description "If set, will call to `srv.respondWith` automatically after every request."}
+    {:name "server.autoRespondAfter = ms;"
+     :description "Causes the server to automatically respond to incoming requests after a timeout."}
+    {:name "Boolean `server.fakeHTTPMethods`"
+     :description "If set to `true`, server will find `_method` parameter in POST body and
+    recognize that as the actual method. Supports a pattern common to Ruby on
+    Rails applications. For custom HTTP method faking, override
+    `server.getHTTPMethod(request)`."}
+    {:name "server.getHTTPMethod(request)"
+     :description "Used internally to determine the HTTP method used with the provided request.
+    By default this method simply returns `request.method`. When
+    `server.fakeHTTPMethods` is true, the method will return the value of the
+    `_method` parameter if the method is \"POST\". This method can be overrided to
+    provide custom behavior."}
+    {:name "server.restore();"
+     :description "Restores the native XHR constructor."}]}]}
+

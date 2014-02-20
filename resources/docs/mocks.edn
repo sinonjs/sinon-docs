@@ -1,0 +1,53 @@
+{:title "Mocks"
+ :introduction-file "mocks-intro.md"
+ :apis
+ [{:id :mocks-api
+   :title "Mocks API"
+   :properties
+   [{:name "var mock = sinon.mock(obj);"
+     :description "Creates a mock for the provided object. Does not change the object, but
+returns a mock object to set expectations on the object's methods."}
+    {:name "var expectation = mock.expects(\"method\");"
+     :description "Overrides `obj.method` with a mock function and returns it.
+See [expectations](#expectations) below."}
+    {:name "mock.restore();"
+     :description "Restores all mocked methods."}
+    {:name "mock.verify();"
+     :description "Verifies all expectations on the mock. If any expectation is not satiesfied,
+an exception is thrown. Also restores the mocked methods."}]}
+  {:id :expectations-api
+   :title "Expectations"
+   :introduction "All the expectation methods returns the expectation, meaning you can chain them.
+Typical usage:
+
+<pre class=\"code-snippet\" data-lang=\"javascript\"><code>sinon.mock(jQuery).expects(\"ajax\").atLeast(2).atMost(5);
+jQuery.ajax.verify();</code></pre>"
+   :properties
+   [{:name "var expectation = sinon.expectation.create([methodName]);"
+     :description "Creates an expectation without a mock object, basically an anonymous mock
+function. Method name is optional and is used in exception messages to make
+them more readable."}
+    {:name "var expectation = sinon.mock();"
+     :description "The same as the above."}
+    {:name "expectation.atLeast(number);"
+     :description "Specify the minimum amount of calls expected."}
+    {:name "expectation.atMost(number);"
+     :description "Specify the maximum amount of calls expected."}
+    {:name "expectation.never();"
+     :description "Expect the method to never be called."}
+    {:name "expectation.once();"
+     :description "Expect the method to be called exactly once."}
+    {:name "expectation.twice();"
+     :description "Expect the method to be called exactly twice."}
+    {:name "expectation.thrice();"
+     :description "Expect the method to be called exactly thrice."}
+    {:name "expectation.exactly(number);"
+     :description "Expect the method to be called exactly `number` times."}
+    {:name "expectation.withArgs(arg1, arg2, ...);"
+     :description "Expect the method to be called with the provided arguments and possibly others."}
+    {:name "expectation.withExactArgs(arg1, arg2, ...);"
+     :description "Expect the method to be called with the provided arguments and no others."}
+    {:name "expectation.on(obj);"
+     :description "Expect the method to be called with `obj` as `this`."}
+    {:name "expectation.verify();"
+     :description "Verifies the expectation and throws an exception if it's not met."}]}]}
