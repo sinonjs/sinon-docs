@@ -1,0 +1,112 @@
+{:title "Matchers"
+ :introduction "<ul class=\"nav\">
+  <li><a href=\"#sinon-match-api\">Matcher API</a></li>
+  <li><a href=\"#sinon-match-andor\">Combining matchers</a></li>
+  <li><a href=\"#sinon-match-custom\">Custom matchers</a></li>
+</ul>
+
+Matchers can be passed as arguments to `spy.calledWith`, `spy.returned` and the
+corresponding `sinon.assert` functions as well as `spy.withArgs`. Matchers allow
+to be either more fuzzy or more specific about the expected value.
+
+<pre class=\"code-snippet\" data-lang=\"javascript\"><code>\"test should assert fuzzy\": function () {
+    var book = {
+        pages: 42,
+        author: \"cjno\"
+    };
+    var spy = sinon.spy();
+
+    spy(book);
+
+    sinon.assert.calledWith(spy, sinon.match({ author: \"cjno\" }));
+    sinon.assert.calledWith(spy, sinon.match.has(\"pages\", 42));
+}</code></pre>
+
+<pre class=\"code-snippet\" data-lang=\"javascript\"><code>\"test should stub method differently based on argument types\": function () {
+    var callback = sinon.stub();
+    callback.withArgs(sinon.match.string).returns(true);
+    callback.withArgs(sinon.match.number).throws(\"TypeError\");
+
+    callback(\"abc\"); // Returns true
+    callback(123); // Throws TypeError
+}</code></pre>"
+ :apis
+ [{:id :sinon-match-api
+   :title "Matchers API"
+   :properties
+   [{:name "sinon.match(number)"
+     :description "Requires the value to be == to the given number."}
+    {:name "sinon.match(string)"
+     :description "Requires the value to be a string and have the expectation as a substring."}
+    {:name "sinon.match(regexp)"
+     :description "Requires the value to be a string and match the given regular expression."}
+    {:name "sinon.match(object)"
+     :description "Requires the value to be not null or undefined and have at least the same properties as `expectation`. This supports nested matchers."}
+    {:name "sinon.match(function)"
+     :description "See <a href=\"#sinon-match-custom\">custom matchers</a>."}
+    {:name "sinon.match.any"
+     :description "Matches anything."}
+    {:name "sinon.match.defined"
+     :description "Requires the value to be defined."}
+    {:name "sinon.match.truthy"
+     :description "Requires the value to be truthy."}
+    {:name "sinon.match.falsy"
+     :description "Requires the value to be falsy."}
+    {:name "sinon.match.bool"
+     :description "Requires the value to be a boolean."}
+    {:name "sinon.match.number"
+     :description "Requires the value to be a number."}
+    {:name "sinon.match.string"
+     :description "Requires the value to be a string."}
+    {:name "sinon.match.object"
+     :description "Requires the value to be an object."}
+    {:name "sinon.match.func"
+     :description "Requires the value to be a function."}
+    {:name "sinon.match.array"
+     :description "Requires the value to be an array."}
+    {:name "sinon.match.regexp"
+     :description "Requires the value to be a regular expression."}
+    {:name "sinon.match.date"
+     :description "Requires the value to be a date object."}
+    {:name "sinon.match.same(ref)"
+     :description "Requires the value to strictly equal `ref`."}
+    {:name "sinon.match.typeOf(type)"
+     :description "Requires the value to be of the given type, where `type` can be one of
+    `&quot;undefined&quot;`,
+    `&quot;null&quot;`,
+    `&quot;boolean&quot;`,
+    `&quot;number&quot;`,
+    `&quot;string&quot;`,
+    `&quot;object&quot;`,
+    `&quot;function&quot;`,
+    `&quot;array&quot;`,
+    `&quot;regexp&quot;` or
+    `&quot;date&quot;`."}
+    {:name "sinon.match.instanceOf(type)"
+     :description "Requires the value to be an instance of the given type."}
+    {:name "sinon.match.has(property[, expectation])"
+     :description "Requires the value to define the given property. The property might be inherited via the prototype chain. If the optional expectation is given, the value of the property is deeply compared with the expectation. The expectation can be another matcher."}
+    {:name "sinon.match.hasOwn(property[, expectation])"
+     :description "Same as `sinon.match.has` but the property must be defined by the value itself. Inherited properties are ignored."}]}
+  {:id :sinon-match-andor
+   :title "Combining matchers"
+   :introduction "All matchers implement `and` and `or`. This allows to
+logically combine mutliple matchers. The result is a new matchers that requires
+both (and) or one of the matchers (or) to return true.
+
+<pre class=\"code-snippet\" data-lang=\"javascript\"><code>var stringOrNumber = sinon.match.string.or(sinon.match.number);
+
+var bookWithPages = sinon.match.instanceOf(Book).and(sinon.match.has(\"pages\"));</code></pre>"
+   :properties []}
+  {:id :sinon-match-custom
+   :title "Custom matchers"
+   :introduction "Custom matchers are created with the `sinon.match` factory
+which takes a test function and an optional message. The test function takes a
+value as the only argument, returns `true` if the value matches the expectation
+and `false` otherwise. The message string is used to generate the error message
+in case the value does not match the expectation.
+
+<pre class=\"code-snippet\" data-lang=\"javascript\"><code>var trueIsh = sinon.match(function (value) {
+    return !!value;
+}, \"trueIsh\");</code></pre>"
+   :properties []}]}

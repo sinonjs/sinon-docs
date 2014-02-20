@@ -1,9 +1,9 @@
 [{:id "spies" :menu-text "Spies"}
  {:id "stubs" :menu-text "Stubs"}
  ;; {:id "mocks" :menu-text "Mocks"}
- ;; {:id "clock" :menu-text "Fake timers"}
+ {:id "clock" :menu-text "Fake timers"}
  ;; {:id "server" :menu-text "Fake <code>XHR</code> and server"}
- ;; {:id "json-p" :menu-text "JSON-P"}
+ {:id "json-p" :menu-text "JSON-P"}
  {:id "assertions" :menu-text "Assertions"}
  ;; {:id "matchers" :menu-text "Matchers"}
  ;; {:id "sandbox" :menu-text "Sandboxing"}
