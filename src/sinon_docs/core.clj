@@ -24,13 +24,22 @@
   (md/to-html s pegdown-options))
 
 (defn releases []
-  (load-edn-file "releases.edn"))
+  (->> "resources/public/releases"
+       clojure.java.io/file
+       file-seq
+       (filter #(re-find #"sinon-\d\.\d+\.\d+" (.getPath %)))
+       (map #(let [matches (re-find #"(\d\.\d+\.\d+), (\d\d\d\d.\d\d.\d\d)" (slurp %))]
+               {:version (nth matches 1) :date (nth matches 2) :file (.getPath %)}))
+       (sort-by :version)
+       reverse))
+
+(def get-releases (memoize releases))
 
 (defn historic-releases []
-  (:historic (releases)))
+  (rest (get-releases)))
 
 (defn current-release []
-  (:sinon (releases)))
+  (first (get-releases)))
 
 (def global-page-vars {:current-version (:version (current-release))})
 
