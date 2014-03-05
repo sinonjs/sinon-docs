@@ -15,7 +15,8 @@
 
 (defn get-pages []
   (merge (pages/get-pages)
-         (stasis/slurp-directory "resources/public" #"releases\/.*$")))
+         (stasis/slurp-directory "resources/public" #"releases\/.*$")
+         (stasis/slurp-directory "resources/public" #".*\.txt$")))
 
 (def optimize optimizations/all)
 
