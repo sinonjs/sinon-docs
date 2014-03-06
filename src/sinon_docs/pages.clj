@@ -39,7 +39,14 @@
    (-> (slurp "resources/partials/download.html")
        (insert-historic-download-links (sinon/historic-releases)))))
 
+(defn qunit-page [context]
+  (page
+   context
+   "Sinon.JS for QUnit"
+   (slurp "resources/partials/qunit/index.html")))
+
 (defn get-pages []
   {"/" frontpage
    "/download/" download-page
-   "/docs/" docs-page})
+   "/docs/" docs-page
+   "/qunit/" qunit-page})

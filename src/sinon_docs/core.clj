@@ -41,7 +41,8 @@
 (defn current-release []
   (first (get-releases)))
 
-(def global-page-vars {:current-version (:version (current-release))})
+(def global-page-vars {:current-version (:version (current-release))
+                       :current-date (:date (current-release))})
 
 (defn interpolate [markup vars]
   (sniptest markup [any-node] (replace-vars vars)))
