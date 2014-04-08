@@ -83,6 +83,9 @@
     {:name "stub.returnsArg(index);"
      :description "Causes the stub to return the argument at the provided index.
         `stub.returnsArg(0);` causes the stub to return the first argument."}
+    {:name "stub.returnsThis();"
+     :description "Causes the stub to return its <code>this</code> value. Useful
+        for stubbing jQuery-style fluent APIs."}
     {:name "stub.throws();"
      :description "Causes the stub to throw an exception (`Error`)."}
     {:name "stub.throws(\"TypeError\");"
