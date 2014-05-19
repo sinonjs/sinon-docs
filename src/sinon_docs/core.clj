@@ -23,6 +23,9 @@
 (defn to-html [s]
   (md/to-html s pegdown-options))
 
+(defn api-version [file]
+  (mapv read-string (str/split (:version file) #"\.")))
+
 (defn releases []
   (->> "resources/public/releases"
        clojure.java.io/file
@@ -30,7 +33,7 @@
        (filter #(re-find #"sinon-\d\.\d+\.\d+" (.getPath %)))
        (map #(let [matches (re-find #"(\d\.\d+\.\d+), (\d\d\d\d.\d\d.\d\d)" (slurp %))]
                {:version (nth matches 1) :date (nth matches 2) :file (.getPath %)}))
-       (sort-by :version)
+       (sort-by api-version)
        reverse))
 
 (def get-releases (memoize releases))
