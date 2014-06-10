@@ -196,7 +196,7 @@ request."}
      :description "Responds to all `method` requests to the given URL with the given response.
     `method` is an HTTP verb."}
     {:name "server.respondWith(urlRegExp, response);"
-     :description "URL may be a regular expression, e.g. `/\\/post/\\d+`
+     :description "URL may be a regular expression, e.g. `/\\/post\\//\\d+`
     If the response is a function, it will be passed any capture groups
     from the regular expression along with the XMLHttpRequest object:
     <pre class=\"code-snippet\" data-lang=\"javascript\"><code>server.respondWith(/\\/todo-items\\/(\\d+)/, function (xhr, id) {

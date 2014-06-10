@@ -72,16 +72,16 @@ to be either more fuzzy or more specific about the expected value.
      :description "Requires the value to strictly equal `ref`."}
     {:name "sinon.match.typeOf(type)"
      :description "Requires the value to be of the given type, where `type` can be one of
-    `&quot;undefined&quot;`,
-    `&quot;null&quot;`,
-    `&quot;boolean&quot;`,
-    `&quot;number&quot;`,
-    `&quot;string&quot;`,
-    `&quot;object&quot;`,
-    `&quot;function&quot;`,
-    `&quot;array&quot;`,
-    `&quot;regexp&quot;` or
-    `&quot;date&quot;`."}
+    `\"undefined\"`,
+    `\"null\"`,
+    `\"boolean\"`,
+    `\"number\"`,
+    `\"string\"`,
+    `\"object\"`,
+    `\"function\"`,
+    `\"array\"`,
+    `\"regexp\"` or
+    `\"date\"`."}
     {:name "sinon.match.instanceOf(type)"
      :description "Requires the value to be an instance of the given type."}
     {:name "sinon.match.has(property[, expectation])"
