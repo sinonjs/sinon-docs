@@ -13,7 +13,7 @@ See [expectations](#expectations) below."}
     {:name "mock.restore();"
      :description "Restores all mocked methods."}
     {:name "mock.verify();"
-     :description "Verifies all expectations on the mock. If any expectation is not satiesfied,
+     :description "Verifies all expectations on the mock. If any expectation is not satisfied,
 an exception is thrown. Also restores the mocked methods."}]}
   {:id :expectations-api
    :title "Expectations"
