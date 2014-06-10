@@ -17,7 +17,7 @@ See [expectations](#expectations) below."}
 an exception is thrown. Also restores the mocked methods."}]}
   {:id :expectations-api
    :title "Expectations"
-   :introduction "All the expectation methods returns the expectation, meaning you can chain them.
+   :introduction "All the expectation methods return the expectation, meaning you can chain them.
 Typical usage:
 
 <pre class=\"code-snippet\" data-lang=\"javascript\"><code>sinon.mock(jQuery).expects(\"ajax\").atLeast(2).atMost(5);
