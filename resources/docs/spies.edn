@@ -83,13 +83,13 @@ are also available on `object.method`."
     `spy.neverCalledWith(sinon.match(arg1), sinon.match(arg2), ...)`."}
     {:name "spy.threw();"
      :description "Returns `true` if spy threw an exception at least once."}
-    {:name "spy.threw(TypeError\");`"
+    {:name "spy.threw(\"TypeError\");"
      :description "Returns `true` if spy threw an exception of the provided type at least once."}
     {:name "spy.threw(obj);"
      :description "Returns `true` if spy threw the provided exception object at least once."}
     {:name "spy.alwaysThrew();"
      :description "Returns `true` if spy always threw an exception."}
-    {:name "spy.alwaysThrew(TypeError\");`"
+    {:name "spy.alwaysThrew(\"TypeError\");"
      :description "Returns `true` if spy always threw an exception of the provided type."}
     {:name "spy.alwaysThrew(obj);"
      :description "Returns `true` if spy always threw the provided exception object."}
