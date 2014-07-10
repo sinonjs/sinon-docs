@@ -42,9 +42,10 @@ Load it after the first file.
    [{:name "var clock = sinon.useFakeTimers();"
      :description "Causes Sinon to replace the global `setTimeout`, `clearTimeout`,
     `setInterval`, `clearInterval` and `Date` with a custom implementation which
-    is bound to the returned `clock` object."}
+    is bound to the returned `clock` object.  Starts the clock at the UNIX epoch (timestamp
+    of 0)"}
     {:name "var clock = sinon.useFakeTimers(now);"
-     :description "As above, but rather than starting the clock at the current timestamp, start
+     :description "As above, but rather than starting the clock with a timestamp of 0, start
     at the provided timestamp."}
     {:name "var clock = sinon.useFakeTimers([now, ]prop1, prop2, ...);"
      :description "Sets the clock start timestamp and names functions to fake. Possible
