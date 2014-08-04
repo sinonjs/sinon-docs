@@ -74,10 +74,12 @@ after the first file.
      :description "<p>
       An object of all request headers, i.e.:
     </p>
-    <pre class=\"code-snippet\" data-lang=\"javascript\"><code>{
+```js
+{
     \"Accept\": \"text/html, */*\",
     \"Connection\": \"keep-alive\"
-}</code></pre>"}
+}
+```"}
     {:name "String request.requestBody"
      :description "The request body"}
     {:name "int request.status"
