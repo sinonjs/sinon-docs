@@ -53,5 +53,5 @@ consecutive calls.
 
 Note that in Sinon version 1.5 to version 1.7, multiple calls to the `yields*`
 and `callsArg*` family of methods define a sequence of behaviors for consecutive
-calls. As of 1.8, this functionality has been removed in favor of the `<a
-href="#stub-onCall">onCall</a>` API.
+calls. As of 1.8, this functionality has been removed in favor of the <a
+href="#stub-onCall"><code>onCall</code></a> API.
