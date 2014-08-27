@@ -9,7 +9,7 @@
 returns a mock object to set expectations on the object's methods."}
     {:name "var expectation = mock.expects(\"method\");"
      :description "Overrides `obj.method` with a mock function and returns it.
-See [expectations](#expectations) below."}
+See [expectations](#expectations-api) below."}
     {:name "mock.restore();"
      :description "Restores all mocked methods."}
     {:name "mock.verify();"
