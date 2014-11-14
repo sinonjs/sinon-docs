@@ -87,6 +87,7 @@
      * ``false`` otherwise.
      */
     function isArguments(object) {
+        if (getClass(object) === 'Arguments') { return true; }
         if (typeof object !== "object" || typeof object.length !== "number" ||
                 getClass(object) === "Array") {
             return false;
@@ -412,7 +413,12 @@
         if (matcher && typeof matcher === "object") {
             var prop;
             for (prop in matcher) {
-                if (!match(object[prop], matcher[prop])) {
+                var value = object[prop];
+                if (typeof value === "undefined" &&
+                        typeof object.getAttribute === "function") {
+                    value = object.getAttribute(prop);
+                }
+                if (typeof value === "undefined" || !match(value, matcher[prop])) {
                     return false;
                 }
             }
@@ -443,7 +449,8 @@
     
     var formatio = {
         excludeConstructors: ["Object", /^.$/],
-        quoteStrings: true
+        quoteStrings: true,
+        limitChildrenCount: 0
     };
 
     var hasOwn = Object.prototype.hasOwnProperty;
@@ -540,10 +547,18 @@
     ascii.array = function (array, processed) {
         processed = processed || [];
         processed.push(array);
-        var i, l, pieces = [];
-        for (i = 0, l = array.length; i < l; ++i) {
+        var pieces = [];
+        var i, l;
+        l = (this.limitChildrenCount > 0) ? 
+            Math.min(this.limitChildrenCount, array.length) : array.length;
+
+        for (i = 0; i < l; ++i) {
             pieces.push(ascii(this, array[i], processed));
         }
+
+        if(l < array.length)
+            pieces.push("[... " + (array.length - l) + " more elements]");
+
         return "[" + pieces.join(", ") + "]";
     };
 
@@ -553,9 +568,11 @@
         indent = indent || 0;
         var pieces = [], properties = samsam.keys(object).sort();
         var length = 3;
-        var prop, str, obj, i, l;
+        var prop, str, obj, i, k, l;
+        l = (this.limitChildrenCount > 0) ? 
+            Math.min(this.limitChildrenCount, properties.length) : properties.length;
 
-        for (i = 0, l = properties.length; i < l; ++i) {
+        for (i = 0; i < l; ++i) {
             prop = properties[i];
             obj = object[prop];
 
@@ -573,7 +590,10 @@
         var cons = constructorName(this, object);
         var prefix = cons ? "[" + cons + "] " : "";
         var is = "";
-        for (i = 0, l = indent; i < l; ++i) { is += " "; }
+        for (i = 0, k = indent; i < k; ++i) { is += " "; }
+
+        if(l < properties.length)
+            pieces.push("[... " + (properties.length - l) + " more elements]");
 
         if (length + indent > 80) {
             return prefix + "{\n  " + is + pieces.join(",\n  " + is) + "\n" +
@@ -760,80 +780,95 @@ function createDate() {
     return mirrorDateProperties(ClockDate, NativeDate);
 }
 
-function addTimer(clock, args, opt) {
-    if (args.length === 0) {
-        throw new Error("Function requires at least 1 parameter");
-    }
-
-    if (typeof args[0] === "undefined") {
+function addTimer(clock, timer) {
+    if (typeof timer.func === "undefined") {
         throw new Error("Callback must be provided to timer calls");
     }
 
-    var toId = id++;
-    var delay = args[1] || 0;
-
-    if (!clock.timeouts) {
-        clock.timeouts = {};
+    if (!clock.timers) {
+        clock.timers = {};
     }
 
-    clock.timeouts[toId] = {
-        id: toId,
-        func: args[0],
-        callAt: clock.now + delay,
-        invokeArgs: Array.prototype.slice.call(args, 2)
-    };
+    timer.id = id++;
+    timer.createdAt = clock.now;
+    timer.callAt = clock.now + (timer.delay || 0);
 
-    if (opt && opt.recurring) {
-        clock.timeouts[toId].interval = delay;
-    }
+    clock.timers[timer.id] = timer;
 
     if (addTimerReturnsObject) {
         return {
-            id: toId,
+            id: timer.id,
             ref: function() {},
             unref: function() {}
         };
     }
     else {
-        return toId;
+        return timer.id;
     }
 }
 
 function firstTimerInRange(clock, from, to) {
-    var timer, smallest = null, originalTimer;
+    var timers = clock.timers, timer = null;
 
-    for (var id in clock.timeouts) {
-        if (!inRange(from, to, clock.timeouts[id])) {
+    for (var id in timers) {
+        if (!inRange(from, to, timers[id])) {
             continue;
         }
 
-        if (smallest === null || clock.timeouts[id].callAt < smallest) {
-            originalTimer = clock.timeouts[id];
-            smallest = clock.timeouts[id].callAt;
-
-            timer = {
-                func: clock.timeouts[id].func,
-                callAt: clock.timeouts[id].callAt,
-                interval: clock.timeouts[id].interval,
-                id: clock.timeouts[id].id,
-                invokeArgs: clock.timeouts[id].invokeArgs
-            };
+        if (!timer || ~compareTimers(timer, timers[id])) {
+            timer = timers[id];
         }
     }
 
-    return timer || null;
+    return timer;
+}
+
+function compareTimers(a, b) {
+    // Sort first by absolute timing
+    if (a.callAt < b.callAt) {
+        return -1;
+    }
+    if (a.callAt > b.callAt) {
+        return 1;
+    }
+
+    // Sort next by immediate, immediate timers take precedence
+    if (a.immediate && !b.immediate) {
+        return -1;
+    }
+    if (!a.immediate && b.immediate) {
+        return 1;
+    }
+
+    // Sort next by creation time, earlier-created timers take precedence
+    if (a.createdAt < b.createdAt) {
+        return -1;
+    }
+    if (a.createdAt > b.createdAt) {
+        return 1;
+    }
+
+    // Sort next by id, lower-id timers take precedence
+    if (a.id < b.id) {
+        return -1;
+    }
+    if (a.id > b.id) {
+        return 1;
+    }
+
+    // As timer ids are unique, no fallback `0` is necessary
 }
 
 function callTimer(clock, timer) {
     if (typeof timer.interval == "number") {
-        clock.timeouts[timer.id].callAt += timer.interval;
+        clock.timers[timer.id].callAt += timer.interval;
     } else {
-        delete clock.timeouts[timer.id];
+        delete clock.timers[timer.id];
     }
 
     try {
         if (typeof timer.func == "function") {
-            timer.func.apply(null, timer.invokeArgs);
+            timer.func.apply(null, timer.args);
         } else {
             eval(timer.func);
         }
@@ -841,7 +876,7 @@ function callTimer(clock, timer) {
         var exception = e;
     }
 
-    if (!clock.timeouts[timer.id]) {
+    if (!clock.timers[timer.id]) {
         if (exception) {
             throw exception;
         }
@@ -923,8 +958,12 @@ var createClock = exports.createClock = function (now) {
 
     clock.Date.clock = clock;
 
-    clock.setTimeout = function setTimeout(callback, timeout) {
-        return addTimer(clock, arguments);
+    clock.setTimeout = function setTimeout(func, timeout) {
+        return addTimer(clock, {
+            func: func,
+            args: Array.prototype.slice.call(arguments, 2),
+            delay: timeout
+        });
     };
 
     clock.clearTimeout = function clearTimeout(timerId) {
@@ -933,30 +972,38 @@ var createClock = exports.createClock = function (now) {
             // relied upon by some libraries, like Bootstrap carousel
             return;
         }
-        if (!clock.timeouts) {
-            clock.timeouts = [];
+        if (!clock.timers) {
+            clock.timers = [];
         }
         // in Node, timerId is an object with .ref()/.unref(), and
         // its .id field is the actual timer id.
         if (typeof timerId === "object") {
             timerId = timerId.id
         }
-        if (timerId in clock.timeouts) {
-            delete clock.timeouts[timerId];
+        if (timerId in clock.timers) {
+            delete clock.timers[timerId];
         }
     };
 
-    clock.setInterval = function setInterval(callback, timeout) {
-        return addTimer(clock, arguments, { recurring: true });
+    clock.setInterval = function setInterval(func, timeout) {
+        return addTimer(clock, {
+            func: func,
+            args: Array.prototype.slice.call(arguments, 2),
+            delay: timeout,
+            interval: timeout
+        });
     };
 
     clock.clearInterval = function clearInterval(timerId) {
         clock.clearTimeout(timerId);
     };
 
-    clock.setImmediate = function setImmediate(callback) {
-        var passThruArgs = Array.prototype.slice.call(arguments, 1);
-        return addTimer(clock, [callback, 0].concat(passThruArgs));
+    clock.setImmediate = function setImmediate(func) {
+        return addTimer(clock, {
+            func: func,
+            args: Array.prototype.slice.call(arguments, 1),
+            immediate: true
+        });
     };
 
     clock.clearImmediate = function clearImmediate(timerId) {
@@ -970,7 +1017,7 @@ var createClock = exports.createClock = function (now) {
 
         var firstException;
         while (timer && tickFrom <= tickTo) {
-            if (clock.timeouts[timer.id]) {
+            if (clock.timers[timer.id]) {
                 tickFrom = clock.now = timer.callAt;
                 try {
                     callTimer(clock, timer);
@@ -993,7 +1040,7 @@ var createClock = exports.createClock = function (now) {
     };
 
     clock.reset = function reset() {
-        clock.timeouts = {};
+        clock.timers = {};
     };
 
     return clock;
