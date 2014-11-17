@@ -114,7 +114,7 @@ allowing others to go throught to the backend server. With filtered
      :description "Add a filter that will decide whether or not to fake a request. The filter
     will be called when `xhr.open` is called, with the exact same arguments
     (`method`, `url`, `async`, `username`, `password`). If the filter returns
-    truthy, the request will not be faked."}]}
+    true, the request will not be faked."}]}
   {:id :responses
    :title "Simulating server responses"
    :properties
