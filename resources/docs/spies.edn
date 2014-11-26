@@ -116,7 +116,7 @@ assertEquals(\"/stuffs\", spyCall.args[0]);"}
     object for the first call."}
     {:name "spy.args"
      :description "Array of arguments received, `spy.args[0]` is an array of
-    arguments recevied in the first call."}
+    arguments received in the first call."}
     {:name "spy.exceptions"
      :description "Array of exception objects thrown, `spy.exceptions[0]` is
     the exception thrown by the first call. If the call did not throw an
