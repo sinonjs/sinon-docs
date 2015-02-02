@@ -55,7 +55,8 @@ after the first file.
     support it with a custom implementation which does not send actual requests.
     In browsers that support `ActiveXObject`, this constructor is replaced, and
     fake objects are returned for `XMLHTTP` progIds. Other progIds, such as
-    `XMLDOM` are left untouched."}
+    `XMLDOM` are left untouched.<br/><br/>The native `XMLHttpRequest` object will be
+    available at `sinon.xhr.XMLHttpRequest`"}
     {:name "xhr.onCreate = function (xhr) {};"
      :description "By assigning a function to the `onCreate` property of the
     returned object from `useFakeXMLHttpRequest()` you can subscribe to newly
