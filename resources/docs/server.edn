@@ -215,7 +215,10 @@ request."}
     sure to call `respondWith` upfront. If called with arguments, `respondWith`
     will be called with those arguments before responding to requests."}
     {:name "server.autoRespond = true;"
-     :description "If set, will call to `srv.respondWith` automatically after every request."}
+     :description "If set, will automatically respond to every request after a timeout.
+    The default timeout is 10ms but you can control it through the `autoRespondAfter`
+    property. Note that this feature is intended to help during mockup development, and
+    is not suitable for use in tests."}
     {:name "server.autoRespondAfter = ms;"
      :description "Causes the server to automatically respond to incoming requests after a timeout."}
     {:name "Boolean `server.fakeHTTPMethods`"
