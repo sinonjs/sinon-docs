@@ -37,6 +37,7 @@
    context
    "Downloads"
    (-> (slurp "resources/partials/download.html")
+       (insert-download-button (sinon/current-release))
        (insert-historic-download-links (sinon/historic-releases)))))
 
 (defn qunit-page [context]
