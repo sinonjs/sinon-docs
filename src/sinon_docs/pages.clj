@@ -9,7 +9,7 @@
   (let [version (:version current-release)
         date (:date current-release)]
     (str/replace html "<div class=\"download-link-placeholder\"/>"
-                 (str "<div class=\"button\"><a href=\"releases/sinon-" version
+                 (str "<div class=\"button\"><a href=\"/releases/sinon-" version
                       ".js\">Download Sinon.JS " version "</a></div><p>"
                       date " - <a href=\"Changelog.txt\">Changelog</a> - "
                       "<a href=\"/download/\">More builds/versions</a></p>"))))
