@@ -41,7 +41,7 @@ shows how to create an anonymous stub that throws an exception when called.
 }</code></pre>
 
 Note how the stub also implements the spy interface. The test verifies that all
-callbacks where called, and also that the exception throwing stub was called
+callbacks were called, and also that the exception throwing stub was called
 before one of the other callbacks.
 
 ### Defining stub behavior on consecutive calls
