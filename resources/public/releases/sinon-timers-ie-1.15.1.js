@@ -1,5 +1,5 @@
 /**
- * Sinon.JS 1.15.4, 2015/06/27
+ * Sinon.JS 1.15.1, 2015/06/10
  *
  * @author Christian Johansen (christian@cjohansen.no)
  * @author Contributors: https://github.com/cjohansen/Sinon.JS/blob/master/AUTHORS
@@ -64,40 +64,4 @@ if (typeof window !== "undefined") {
     setInterval = sinon.timers.setInterval;
     clearInterval = sinon.timers.clearInterval;
     Date = sinon.timers.Date;
-}
-
-/**
- * Helps IE run the fake XMLHttpRequest. By defining global functions, IE allows
- * them to be overwritten at a later point. If these are not defined like
- * this, overwriting them will result in anything from an exception to browser
- * crash.
- *
- * If you don't require fake XHR to work in IE, don't include this file.
- *
- * @author Christian Johansen (christian@cjohansen.no)
- * @license BSD
- *
- * Copyright (c) 2010-2013 Christian Johansen
- */
-if (typeof window !== "undefined") {
-    function XMLHttpRequest() {}
-
-    // Reassign the original function. Now its writable attribute
-    // should be true. Hackish, I know, but it works.
-    XMLHttpRequest = sinon.xhr.XMLHttpRequest || undefined;
-}
-/**
- * Helps IE run the fake XDomainRequest. By defining global functions, IE allows
- * them to be overwritten at a later point. If these are not defined like
- * this, overwriting them will result in anything from an exception to browser
- * crash.
- *
- * If you don't require fake XDR to work in IE, don't include this file.
- */
-if (typeof window !== "undefined") {
-    function XDomainRequest() {}
-
-    // Reassign the original function. Now its writable attribute
-    // should be true. Hackish, I know, but it works.
-    XDomainRequest = sinon.xdr.XDomainRequest || undefined;
 }

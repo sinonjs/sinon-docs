@@ -1,5 +1,5 @@
 /**
- * Sinon.JS 1.15.4, 2015/06/27
+ * Sinon.JS 1.15.1, 2015/06/10
  *
  * @author Christian Johansen (christian@cjohansen.no)
  * @author Contributors: https://github.com/cjohansen/Sinon.JS/blob/master/AUTHORS
@@ -3312,9 +3312,9 @@ var sinon = (function () {
         var match = sinon.match;
 
         function mock(object) {
-            // if (typeof console !== undefined && console.warn) {
-            //     console.warn("mock will be removed from Sinon.JS v2.0");
-            // }
+            if (typeof console !== undefined && console.warn) {
+                console.warn("mock will be removed from Sinon.JS v2.0");
+            }
 
             if (!object) {
                 return sinon.expectation.create("Anonymous mock");
@@ -4447,10 +4447,6 @@ if (typeof sinon == "undefined") {
     };
     /*jsl:end*/
 
-    // Note that for FakeXMLHttpRequest to work pre ES5
-    // we lose some of the alignment with the spec.
-    // To ensure as close a match as possible,
-    // set responseType before calling open, send or respond;
     function FakeXMLHttpRequest() {
         this.readyState = FakeXMLHttpRequest.UNSENT;
         this.requestHeaders = {};
@@ -4458,8 +4454,6 @@ if (typeof sinon == "undefined") {
         this.status = 0;
         this.statusText = "";
         this.upload = new UploadProgress();
-        this.responseType = "";
-        this.response = "";
         if (sinonXhr.supportsCORS) {
             this.withCredentials = false;
         }
@@ -4741,7 +4735,6 @@ if (typeof sinon == "undefined") {
                 this.username = username;
                 this.password = password;
                 this.responseText = null;
-                this.response = this.responseType === "json" ? null : "";
                 this.responseXML = null;
                 this.requestHeaders = {};
                 this.sendFlag = false;
@@ -4834,7 +4827,6 @@ if (typeof sinon == "undefined") {
 
                 this.errorFlag = false;
                 this.sendFlag = this.async;
-                this.response = this.responseType === "json" ? null : "";
                 this.readyStateChange(FakeXMLHttpRequest.OPENED);
 
                 if (typeof this.onSend == "function") {
@@ -4847,7 +4839,6 @@ if (typeof sinon == "undefined") {
             abort: function abort() {
                 this.aborted = true;
                 this.responseText = null;
-                this.response = this.responseType === "json" ? null : "";
                 this.errorFlag = true;
                 this.requestHeaders = {};
                 this.responseHeaders = {};
@@ -4928,7 +4919,6 @@ if (typeof sinon == "undefined") {
                     }
                 }
 
-                this.response = this.responseType === "json" ? JSON.parse(this.responseText) : this.responseText;
                 this.readyStateChange(FakeXMLHttpRequest.DONE);
             },
 
