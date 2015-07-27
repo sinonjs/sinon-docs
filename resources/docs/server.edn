@@ -127,8 +127,6 @@ allowing others to go throught to the backend server. With filtered
      :description "Sets the respond body, updates the `readyState` property and fires
     `onreadystatechange`. Additionally, populates `responseXML` with a parsed
     document if [response headers indicate as much](http://www.w3.org/TR/XMLHttpRequest/)."}
-    {:name "var server = sinon.fakeServer.create();"
-     :description "Creates a new server. This function also calls `sinon.useFakeXMLHttpRequest()`."}
     {:name "request.respond(status, headers, body);"
      :id :respond
      :description "Calls the above two methods and sets the `status` and
@@ -144,6 +142,7 @@ from `sinon.FakeXMLHttpRequest.statusCodes`."}
     {:name "Number request.autoRespondAfter"
      :id :auto-respond-after
      :description "When `autoRespond` is `true`, respond to requests after this number of milliseconds. Default is 10."}]}
+
   {:id :fakeServer
    :title "Fake server"
    :introduction "High-level API to manipulate `FakeXMLHttpRequest` instances.
@@ -172,13 +171,16 @@ from `sinon.FakeXMLHttpRequest.statusCodes`."}
     }
 }</code></pre>"
    :properties
-   [{:name "var server = sinon.fakeServer.create();"
-     :description "Creates a new server. This function also calls `sinon.useFakeXMLHttpRequest()`."}
+   [{:name "var server = sinon.fakeServer.create([config]);"
+     :description "Creates a new server. This function also calls `sinon.useFakeXMLHttpRequest()`.
+`create` accepts optional properties to configure the fake server. See [options](#options) below for configuration parameters."}
     {:name "var server = sinon.fakeServerWithClock.create();"
      :description "Creates a server that also manages fake timers. This is
     useful when testing XHR objects created with e.g. jQuery 1.3.x, which uses a
     timer to poll the object for completion, rather than the usual
     `onreadystatechange`."}
+    {:name "server.configure(config)"
+     :description "Configures the fake server. See [options](#options) below for configuration parameters."}
     {:name "server.respondWith(response);"
      :description "`response` can be on of three things:
 
@@ -240,5 +242,38 @@ request."}
     `_method` parameter if the method is \"POST\". This method can be overrided to
     provide custom behavior."}
     {:name "server.restore();"
-     :description "Restores the native XHR constructor."}]}]}
+     :description "Restores the native XHR constructor."}]}
+
+  {:id :options
+   :title "Fake server options"
+   :introduction "These options are properties on the server object and can be set directly:
+
+<pre class=\"sh_javascript\"><code>server.autoRespond = true</code></pre>
+
+You can also pass options with an object literal to <code>fakeServer.create</code> and <code>.configure</code>."
+   :properties
+   [{:name "boolean autoRespond"
+     :description "If set, will automatically respond to every request after a
+     timeout. The default timeout is 10ms but you can control it through the
+     <code>autoRespondAfter</code> property. Note that this feature is intended
+     to help during mockup development, and is not suitable for use in tests.
+     For synchronous immediate responses, use <code>respondImmediately</code>
+     instead."}
+    {:name "int autoRespondAfter (ms)"
+     :description "Causes the server to automatically respond to incoming requests after a timeout."}
+    {:name "boolean respondImmediately"
+     :description "If set, the server will respond to every request immediately
+     and synchronously. This is ideal for faking the server from within a test
+     without having to call <code>server.respond()</code> after each request
+     made in that test. As this is synchronous and immediate, this is not
+     suitable for simulating actual network latency in tests or mockups. To
+     simulate network latency with automatic responses, see
+     <code>server.autoRespond</code> and
+     <code>server.autoRespondAfter</code>."}
+    {:name "boolean fakeHTTPMethods"
+     :description "If set to <code>true</code>, server will find
+     <code>_method</code> parameter in <code>POST</code> body and recognize that
+     as the actual method. Supports a pattern common to Ruby on Rails
+     applications. For custom HTTP method faking, override
+     <code>server.getHTTPMethod(request)</code>."}]}]}
 
