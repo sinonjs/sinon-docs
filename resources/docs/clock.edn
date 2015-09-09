@@ -9,11 +9,9 @@ When faking timers with IE you also need
 [sinon-ie-${current-version}](/releases/sinon-ie-${current-version}.js), which
 should be loaded after sinon-${current-version}.js.
 
-The fake timers can be used completely stand-alone by downloading
-[sinon-timers-${current-version}](/releases/sinon-timers-${current-version}.js)
-When using the fake timers in IE you also need
-[sinon-timers-ie-${current-version}](/releases/sinon-timers-ie-${current-version}.js).
-Load it after the first file.
+For standalone usage of fake timers it is recommended to use
+[lolex](https://github.com/sinonjs/lolex) package instead. It provides the same
+set features and was previously extracted from Sinon.JS.
 
 <pre class=\"code-snippet timers\" data-lang=\"javascript\"><code>{
     setUp: function () {
