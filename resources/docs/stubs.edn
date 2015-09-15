@@ -125,12 +125,12 @@
         }
     });
 }"}
-    {:name "spy.yield([arg1, arg2, ...])"
-     :description "Invoke callbacks passed to the `spy` with the given
-        arguments. If the spy was never called with a function argument,
+    {:name "stub.yield([arg1, arg2, ...])"
+     :description "Invoke callbacks passed to the `stub` with the given
+        arguments. If the stub was never called with a function argument,
         `yield` throws an error. Also aliased as
         `invokeCallback`."}
-    {:name "spy.yieldTo(callback, [arg1, arg2, ...])"
+    {:name "stub.yieldTo(callback, [arg1, arg2, ...])"
      :description "Invokes callbacks passed as a property of an object to the
         spy. Like `yield`, `yieldTo` grabs the first
         matching argument, finds the callback and calls it with the (optional)
@@ -148,7 +148,7 @@
 
     callback.yieldTo(\"failure\"); // Logs \"Oh noes!\"
 }"}
-    {:name "spy.callArg(argNum)"
+    {:name "stub.callArg(argNum)"
      :description "Like `yield`, but with an explicit argument number
         specifying which callback to call. Useful if a function is called with
         more than one callback, and simply calling the first callback is not
@@ -163,7 +163,7 @@
 
     callback.callArg(1); // Logs \"Oh noes!\"
 }"}
-    {:name "spy.callArgWith(argNum, [arg1, arg2, ...])"
+    {:name "stub.callArgWith(argNum, [arg1, arg2, ...])"
      :description "
         Like `callArg`, but with arguments.
       "}
