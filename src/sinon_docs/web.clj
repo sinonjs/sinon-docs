@@ -24,7 +24,7 @@
              (optimus/wrap get-assets optimize serve-live-assets)
              wrap-content-type))
 
-(def export-dir "./dist")
+(def export-dir "build")
 
 (defn export []
   (let [assets (optimize (get-assets) {})]
