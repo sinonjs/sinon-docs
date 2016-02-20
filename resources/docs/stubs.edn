@@ -21,10 +21,13 @@
         objects that you don't understand or control all the methods for
         (e.g. library dependencies).  Stubbing individual methods tests
         intent more precisely and is less susceptible to unexpected
-        behavior as the object's code evolves.<br>
-        If you want to create a stub object of `MyConstructor`,
-        but don't want the constructor to be invoked, use this utility
-        function."
+        behavior as the object's code evolves.
+
+You can restore all stubbed functions on the object by invoking `sinon.restore(obj)`.
+
+If you want to create a stub object of `MyConstructor`,
+but don't want the constructor to be invoked, use this utility
+function."
      :example "var stub = sinon.createStubInstance(MyConstructor)"}
     {:name "stub.withArgs(arg1[, arg2, ...]);"
      :description "Stubs the method only for the provided arguments. This is useful to be
