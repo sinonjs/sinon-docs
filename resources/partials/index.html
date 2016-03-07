@@ -441,7 +441,7 @@ function once(fn) {
 
 it("returns the return value from the original function", sinon.test(function () {
     var myAPI = { method: function () {} };
-    var mock = sinon.mock(myAPI);
+    var mock = this.mock(myAPI);
     mock.expects("method").once().returns(42);
 
     var proxy = once(myAPI.method);
