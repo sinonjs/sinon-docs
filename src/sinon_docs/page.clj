@@ -12,6 +12,7 @@
      (-> (html5
           [:head
            [:meta {:charset "utf-8"}]
+           [:meta {:name "google-site-verification" :content "mkRakJ_AGQ2BuUur1LqqqHh-x3wFVnE_UmPxLFxGHro"}]
            [:title (str "Sinon.JS - " title)]
            [:link {:rel "stylesheet" :type "text/css" :href (link/file-path request "/styles/sinon.css")}]]
           [:body {:class (:body-class options)}
