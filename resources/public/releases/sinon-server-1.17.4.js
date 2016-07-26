@@ -1,5 +1,5 @@
 /**
- * Sinon.JS 1.17.5, 2016/07/27
+ * Sinon.JS 1.17.4, 2016/07/27
  *
  * @author Christian Johansen (christian@cjohansen.no)
  * @author Contributors: https://github.com/cjohansen/Sinon.JS/blob/master/AUTHORS
@@ -303,7 +303,7 @@ var sinon = (function () {
             }
 
             for (prop in a) {
-                if (hasOwn.call(a, prop)) {
+                if (a.hasOwnProperty(prop)) {
                     aLength += 1;
 
                     if (!(prop in b)) {
@@ -317,7 +317,7 @@ var sinon = (function () {
             }
 
             for (prop in b) {
-                if (hasOwn.call(b, prop)) {
+                if (b.hasOwnProperty(prop)) {
                     bLength += 1;
                 }
             }
@@ -1153,7 +1153,7 @@ if (typeof sinon === "undefined") {
         }
 
         var xhr = this;
-        var events = ["loadstart", "load", "abort", "error", "loadend"];
+        var events = ["loadstart", "load", "abort", "loadend"];
 
         function addEventListener(eventName) {
             xhr.addEventListener(eventName, function (event) {
@@ -1487,16 +1487,12 @@ if (typeof sinon === "undefined") {
                 }
 
                 if (this.readyState === FakeXMLHttpRequest.DONE) {
-                    // ensure loaded and total are numbers
-                    progress = {
-                      loaded: this.progress || 0,
-                      total: this.progress || 0
-                    };
-
-                    if (this.status === 0) {
+                    if (this.status < 200 || this.status > 299) {
+                        progress = {loaded: 0, total: 0};
                         event = this.aborted ? "abort" : "error";
                     }
                     else {
+                        progress = {loaded: 100, total: 100};
                         event = "load";
                     }
 
@@ -1589,15 +1585,6 @@ if (typeof sinon === "undefined") {
                 this.readyState = FakeXMLHttpRequest.UNSENT;
             },
 
-            error: function error() {
-                clearResponse(this);
-                this.errorFlag = true;
-                this.requestHeaders = {};
-                this.responseHeaders = {};
-
-                this.readyStateChange(FakeXMLHttpRequest.DONE);
-            },
-
             getResponseHeader: function getResponseHeader(header) {
                 if (this.readyState < FakeXMLHttpRequest.HEADERS_RECEIVED) {
                     return null;
@@ -1661,7 +1648,6 @@ if (typeof sinon === "undefined") {
                 } else if (this.responseType === "" && isXmlContentType(contentType)) {
                     this.responseXML = FakeXMLHttpRequest.parseXML(this.responseText);
                 }
-                this.progress = body.length;
                 this.readyStateChange(FakeXMLHttpRequest.DONE);
             },
 

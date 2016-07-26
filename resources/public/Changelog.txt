@@ -1,23 +1,210 @@
 
-1.17.3 / 2016-01-27
+2.0.0-pre.2 / 2016-07-07
 ==================
 
-  * Fix toString() calls
+  * CJSify sinon.call tests (#1079)
+  * CJSify sinon.calledInOrder tests (#1080)
+  * CJSify get-config tests (#1081)
+  * CJSify sinon.assert tests (#1078)
+  * Resolve test failure in node 0.10.x (#1073)
+  * Expose `sinon.assert` on sandbox instances. (#1076)
+  * Add resetBehavior and resetHistory to sandbox API (#1072)
+  * Fix incorrect inline function names
+  * Fix calledOnce on tests for #283. This closes #283.
+  * Add sandbox.reset() docs
+  * Add a line recommending how to pronounce.
+  * Improve tests based on PR feedback
+  * Allow xhr.respond(0) to simulate a network failure and call onerror
+  * Use event loaded instead of error event for code like 403, 500, etc.
+  * Fix invalid markdown in fake-timers.ms (#1054)
+  * Do not invoke getters in walk (#1059)
+  * ReactNative compatibility. Allow sinon fakeServer to run in React Native (#1052)
+  * added timeouts to ensure tests pass
+  * Run tests on stable Node 6 instead of unstable Node 5
+  * added tests to ensure only expected events are fired (#1043)
+  * Fixed formatting of issue template
+  * Added note on using latest version
+  * Fix onerror event triggering for fake xhr requests (#1041)
+  * Add missing mocaccino and phantomic to package.json (#1029)
+  * Pull request and issue templates (#1012)
+  * Fix capturing of stack traces in Phantom.js.
+  * Allow sinon.calledInOrder to be called either with an array of spies or multiple spies as parameters.  Add explicit test cases for sinon.calledInOrder
+  * Fix typos found by codespell
+  * Document faking of setImmediate and clearImmediate
+  * Add feature detection guard for tests containing es6 Symbols
+  * Add support for es6 Symbol to wrapMethod method
+  * Convert values to strings with toString instead of String()
+  * Add typeOf matcher for symbol type
+  * Make expectetation fail as expected when called with wrong Symbol
+  * Make mock report expected TypeError when expecting number and given symbol
+  * Add support for es6 Symbol to match.has method
+  * Make error message when failing to stub method support es6 symbol
+  * Make yieldToOn fail as expected when yielding an es6 Symbol
+  * Add support for es6 Symbol to match.same method
+  * Make yieldTo fail as expected when yielding an es6 Symbol
+  * Add support for es6 Symbol to match method
+  * Work around SauceLabs security limitations
+  * Declare test specific eslint configs in test/.eslintrc
+  * Add test-coverage script
+  * Add eslint-plugin-mocha
+  * Remove browserify-shim
+  * Setup saucelabs tests and adjust travis config
+  * Feature detect __proto__ to exclude a timer test in IE 10
+  * Convert webworker test to mocha
+  * Remove buster
+  * Replace npm test script with mocha / mochify invocations
+  * Fix async fake-xml-http-request tests
+  * Convert issues tests to mocha
+  * Convert util tests to mocha
+  * Convert core tests to mocha
+  * Convert stub tests to mocha
+  * Convert typeof tests to mocha
+  * Convert spy tests to mocha
+  * Convert sandbox tests to mocha
+  * Convert mock tests to mocha
+  * Convert hello world test to mocha
+  * Convert extend tests to mocha
+  * Convert collection tests to mocha
+  * Convert call tests to mocha
+  * Convert assert tests to mocha
+  * Convert matcher tests to mocha
+  * Update docs/TODO.md to reflect plan to Jekyll
+  * CJSify Spy and Stub Tests.
+  * CJSify Core Util Tests.
+  * Migrate Packaged Tests to use a Browserified Build.
+  * fix non enumerable methods stub restore
+  * Improve Blob support detection logics
+  * Fix a typo in Contributing.md
+  * Update Node versions on Travis
+  * Use PhantomJS 2.
+  * Fix #835: make err.message writable
+  * Remove linting errors in switch cases
+  * Add spy.notCalled to documentation
+  * Remove `sinon.test()` and `sinon.testCase`.
+  * Remove `sinon.log` and `sinon.logError`
+  * De-fluff
+  * Remove `sinon-test` module.
+  * Extract `get-config` tests from `sinon-test`.
+  * Extract `function-to-string` tests from `sinon-test`.
+  * Extract `restore` tests from `sinon-test`.
+  * Extract `createStubInstance` tests from `sinon-test`
+  * Extract `deep-equal` tests from `sinon-test`.
+  * Extract `wrap-method` tests from `sinon-test`.
+  * Extract `extend` tests from `sinon-test` to `extend-test`
+  * Move 'lib/util/core' tests into 'test/util/core'
+  * Remove the use of `sinon.format` from the codebase
+  * Require sinon.deepEqual in a more modular way
+  * Fix 648: test for this.proxy before trying toString on it
+  * use the correct sinon.deepEqual to test sinon matcher
+  * add stub test to ensure sinon matcher is recognized within stub.withArgs
+  * update repo link
+  * Remove unused dependency util
+  * Update samsam
+  * Update lolex
+  * Update browserify
+  * Update dependency pre-commit
+  * Update buster-istanbul to 0.1.15
+  * ignore webstorm configs
+  * fix async issues and increase buster timeout
+  * test on node 5
+  * Fixes typo error in docs
+  * fix typo in lib/sinon.js
+  * Fixes typo error in docs
+  * Adding comment to warn against using eval
+  * fix linting
+  * Get rid of eval in sinon spy
+  * Update README URLs based on HTTP redirects
+
+2.0.0-pre / 2015-12-02
+==================
+
+  * 2.0.0 pre-release
+  * Extract `sandbox` into a CommonJS module.
+  * Clarify documentation on creating stubs and spies
+  * Extract `util/fake_server_with_clock` into a CommonJS module
+  * Extract `util/fake_server` into a CommonJS module.
+  * Extract `util/fake_timers` into a CommonJS module.
+  * Extract `util/fake_xml_http_request` into a CommonJS module.
+  * Extract `util/fake_xdomain_request` into a CommonJS module.
+  * Extract `util/event` into a CommonJS module.
+  * Extract `sinon.logError` into a CommonJS module.
+  * Extract (most of) sinon.collection into a CommonJS module
+  * Extract `sinon.mock` into a CommonJS module.
+  * Import mock's dependencies are CommonJS modules.
+  * Extract `createSpyCall` into a CommonJS module.
+  * Extract `sinon.assert` into a CommonJS module.
+  * Remove `walk` from sinon's public API.
+  * Patch up linting errors
+  * Remove `sinon` import from stub
+  * Extract `sinon.behavior` into a CommonJS module
+  * Extract `sinon.walk` into a CommonJS module.
+  * Export stub as a CommonJS module
+  * Import `wrapMethod` as a CommonJS module
+  * Import core dependencies as CommonJS modules
+  * Delete .jscsrc
   * Ensure sinon can run in a  WebWorker
-  * Changed the priority of which global is chosen first.
-  * Fixed #785 by checking the global variables are set
-
-1.17.2 / 2015-10-21
-==================
-
+  * Updated docs to reflect that calledOn accepts a matcher
+  * simplified test and added a note
+  * updated to require spy in its new cjs form
+  * ./commonjs
+  * expose sinon.spy and sinon.spyCall
+  * converted spy to commonjs format
+  * moved sinon.format() to core
+  * fixed spy tests
+  * added missing test (pushes spy coverage to 100%)
+  * added spy getter/setter tests
+  * updated sinon.spy() to properly handle getters and setters
+  * Remove unnecessary error variable
+  * Prevent stubbed getter from being called during restore() - fixes #897
+  * Allowed GET requests to have request bodies
+  * Remove JSCS from devDependencies
+  * Add Gitter badge
+  * Allow yieldsOn, callsArgOn, callsArgOnWith, yieldsToOn to use any context
+  * Add bithound badge to README.md
+  * removed switch statement in favor of object lookup
+  * Use immediate exceptions
+  * lib/sinon/util: Remove window conditionals from IE files.
+  * Add docs for sandbox and utils
+  * Add documentation for matchers
+  * Add docs for assertions
+  * Add docs for JSON-P
+  * Add docs for fake server
+  * Add docs for fake timers
+  * Add mock api descriptions
+  * Add mocks introduction
+  * Add stubs api
+  * Update TODO
+  * Use Object.prototype.hasOwnProperty in deepEqual to cope with cases where hasOwnProperty doesn't exist, ie. Object.create(null), or has been overridden on an object. With tests.
+  * Add docs TODO to track outstanding tasks
+  * Add stubs.md with introduction to stubs
+  * Import docs
+  * Fix #875 Proper support UTF8 payloads * introduced new dependency "text-encoding" * delegate encoding operations to TextEncoder/TextDecoder * added unit test to verify proper utf-8 encoding
+  * finished eslint'ing
+  * upgraded ESLint to 1.7.1 (latest and greatest)
+  * Run tests in node 4.2 LTS (Argon)
+  * removed unneeded path resolution
+  * Let npm install handle buster again, now that we have caching of node_modules
+  * Make travis cache node_modules to speed up builds
+  * removed duplicate implementation of sinon.timesInWords
+  * fix travis-ci build svg in README
+  * reviewer comments
+  * cleaning up left over blank lines
+  * CommonJS-ified *some* of the things
+  * updated readyStateChange to align to the w3c spec (somewhat)
+  * cleaned up a few unreleated tests
+  * updated tests to reflect reality
+  * added some additional progress event verification
+  * added a test to ensure load is not fired before abort
+  * added test to ensure event ordering
+  * allow progress events with loaded/total values of 0
   * Fix #867: Walk properties only once
-
-1.17.1 / 2015-09-26
-==================
-
+  * Removed unnecessary module wrappers and double test run in NodeJS.
+  * null-check the object passed to sinon.stub
+  * implemented stub#resetHistory method - fixes #863
   * Fix #851: Do not attempt to re-stub constructors
   * Fix #847: Ensure walk invokes accessors directly on target
   * Run tests in node 4.1.x also
+  * stub.reset also resets behavior
 
 1.17.0 / 2015-09-22
 ==================
@@ -315,7 +502,7 @@
 * New methods stub.callsArgOn, stub.callsArgOnWith,
   stub.yieldsOn, stub.yieldsToOn
 * Implemented
-* Fixing `clearTimeout` to not throw when called for nonexistant IDs.
+* Fixing `clearTimeout` to not throw when called for nonexistent IDs.
 * Spys that are created using 'withArgs' now get initialized with previous
   calls to the original spy.
 * Minor bug fixes and docs cleanup.
