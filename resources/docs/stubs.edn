@@ -15,6 +15,10 @@
      :description "Replaces `object.method` with a `func`, wrapped
         in a `spy`. As usual, `object.method.restore();`
         can be used to restore the original method."}
+    {:name "var stub = sinon.stub(object, \"getter\", property);"
+     :description "Replaces `object.getter` with a new function which returns
+        `property`, also wrapped in a `spy`. As usual, `object.method.restore();`
+        can be used to restore the original method."}
     {:name "var stub = sinon.stub(obj);"
      :description "Stubs all the object's methods.  Note that it's usually better
         practice to stub individual methods, particularly on

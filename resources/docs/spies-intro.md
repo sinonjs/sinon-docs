@@ -68,6 +68,7 @@ contrived example:
     original method in all cases. The original method can be restored by calling
     <code>object.method.restore()</code>. The returned spy is the function
     object which replaced the original method. <code>spy === object.method</code>.
+    This method also works on getters and setters.
   </dd>
 </dl>
 
