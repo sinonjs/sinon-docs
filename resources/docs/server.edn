@@ -182,7 +182,7 @@ from `sinon.FakeXMLHttpRequest.statusCodes`."}
     {:name "server.configure(config)"
      :description "Configures the fake server. See [options](#options) below for configuration parameters."}
     {:name "server.respondWith(response);"
-     :description "`response` can be on of three things:
+     :description "`response` can be one of three things:
 
 1. A string representing the response body
 2. An array with status, headers and response body, e.g. `[200, { \"Content-Type\": \"text/html\", \"Content-Length\": 2 }, \"OK\"]`
