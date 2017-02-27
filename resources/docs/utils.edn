@@ -7,7 +7,7 @@
    :title "Utils API"
    :properties
    [{:name "sinon.createStubInstance(constructor)"
-     :description "Creates a new object with the given function as the protoype and
+     :description "Creates a new object with the given function as the prototype and
 stubs all implemented functions. The given constructor function is
 not invoked. See also the [stub API](#stubs)."}
     {:name "sinon.format(object)"
