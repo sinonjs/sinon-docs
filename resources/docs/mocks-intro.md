@@ -19,7 +19,7 @@ assertion for some specific call, don't mock it. Use a stub instead. In general
 you should never have more than **one** mock (possibly with several
 expectations) in a single test.
 
-[Expectations](#expectations) implement both the [spies](#spies) and
+[Expectations](#expectations-api) implement both the [spies](#spies) and
 [stubs](#stubs) APIs.
 
 To see how mocks look like in Sinon.JS, here's one of the PubSubJS tests again,
