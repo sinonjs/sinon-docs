@@ -100,6 +100,8 @@ are also available on `object.method`."
     comparison (see [matchers](#matchers))."}
     {:name "spy.alwaysReturned(obj);"
      :description "Returns `true` if spy always returned the provided value."}
+    {:name "spy.getCalls();"
+     :description "Returns all calls as an array of [spyCall](#spycall)s.}
     {:name "var spyCall = spy.getCall(n);"
      :description "<p>
       Returns the <em>nth</em> [call](#spycall). Accessing individual calls
